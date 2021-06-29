@@ -23,6 +23,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  snapping_sheet:
+  firebase_core: 
+  cloud_firestore:
+  firebase_auth: 
+  firebase_database:
 
 
   flutter_icons: ^1.1.0

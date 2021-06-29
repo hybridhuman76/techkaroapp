@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "810605934692",
+    "project_id": "techkaroapp",
+    "storage_bucket": "techkaroapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:810605934692:android:a20e1ad8d8b5dc9ed6c771",
+        "android_client_info": {
+          "package_name": "com.example.techkaroapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "810605934692-m6p5iblo0fpddk9phsihctous1frqofe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKMdJ5YXao8P_M0ZpKIKJYIQS6G5yPeNA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "810605934692-m6p5iblo0fpddk9phsihctous1frqofe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
