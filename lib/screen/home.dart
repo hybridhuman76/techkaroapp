@@ -21,11 +21,11 @@ class _HomeState extends State<Home> {
       {
         if (value.exists) {
           setState(() {
-            line2 = "${(value.data()["_al2"])}";
-            line3 = "${(value.data()["_al3"])}";
-            flat = "${(value.data()["_flat"])}";
+            line2 = "${(value.data()["al2"])}";
+            line3 = "${(value.data()["al3"])}";
+            flat = "${(value.data()["flat"])}";
           });
-          print('Document data: ${(value.data()["name"])}');
+          // print('Document data: ${(value.data()["name"])}');
         } else {
           print('Document does not exist on the database');
         }
@@ -35,6 +35,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    x();
     return Scaffold(
       body: SingleChildScrollView(
           child: Container(
