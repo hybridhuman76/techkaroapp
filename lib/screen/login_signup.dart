@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:techkaroapp/config/pallete.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:techkaroapp/screen/home.dart';
 
 class LoginSignupScreen extends StatefulWidget {
@@ -13,11 +9,19 @@ class LoginSignupScreen extends StatefulWidget {
   _LoginSignupScreenState createState() => _LoginSignupScreenState();
 }
 
+String _email = "",
+    _password = "",
+    _al2 = "",
+    _al3 = "",
+    _flat = "",
+    _name = "",
+    _mob = "";
+
 class _LoginSignupScreenState extends State<LoginSignupScreen> {
   bool isMale = true;
   bool isSignupScreen = true;
   bool isRememberMe = false;
-  String _email, _password, _al2, _al3, _flat, _name, _mob;
+
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final firestoreInstance = FirebaseFirestore.instance;
   @override
@@ -156,8 +160,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                 Icon(Icons.account_circle_outlined),
                                 "Full Name",
                                 false,
-                                true,
-                                _name),
+                                false,
+                                "_name"),
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 10),
@@ -165,8 +169,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                 Icon(Icons.account_circle_outlined),
                                 "Mobile Number",
                                 false,
-                                true,
-                                _mob),
+                                false,
+                                "_mob"),
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 10),
@@ -174,8 +178,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                 Icon(Icons.account_circle_outlined),
                                 "Flat Number",
                                 false,
-                                true,
-                                _flat),
+                                false,
+                                "_flat"),
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 10),
@@ -183,8 +187,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                 Icon(Icons.account_circle_outlined),
                                 "Address Line 2",
                                 false,
-                                true,
-                                _al2),
+                                false,
+                                "_al2"),
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 10),
@@ -192,18 +196,18 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                 Icon(Icons.account_circle_outlined),
                                 "Address Line 3",
                                 false,
-                                true,
-                                _al3),
+                                false,
+                                "_al3"),
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 10),
                             child: builtTextField(Icon(Icons.email), "Email ID",
-                                false, true, _email),
+                                false, true, "_email"),
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 10),
                             child: builtTextField(Icon(Icons.password),
-                                "Password", true, false, _password),
+                                "Password", true, false, "_password"),
                           ),
                           MaterialButton(
                             child: Text("Create Account"),
@@ -262,13 +266,15 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
   }
 
   Widget builtTextField(
-      Icon icon, String hintText, bool isPassword, bool isEmail, change) {
+      // _email, _password, _al2, _al3, _flat, _name, _mob
+      Icon icon,
+      String hintText,
+      bool isPassword,
+      bool isEmail,
+      change) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: TextField(
-        onChanged: (text) {
-          change = text;
-        },
         obscureText: isPassword,
         keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
         decoration: InputDecoration(
@@ -288,6 +294,21 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
             color: Pallete.textColor1,
           ),
         ),
+        onChanged: (text) {
+          if (change == "_email") {
+            _email = text;
+          } else if (change == "_password") {
+            _password = text;
+          } else if (change == "_al2") {
+            _al2 = text;
+          } else if (change == "_al3") {
+            _al3 = text;
+          } else if (change == "_flat") {
+            _flat = text;
+          } else if (change == "_mob") {
+            _mob = text;
+          }
+        },
       ),
     );
   }

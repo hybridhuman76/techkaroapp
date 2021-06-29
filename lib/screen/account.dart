@@ -1,14 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:techkaroapp/main.dart';
 import 'home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Account extends StatefulWidget {
   @override
   _AccountState createState() => _AccountState();
 }
 
+String flat = "", name = "", line2 = "", line3 = "";
+
 class _AccountState extends State<Account> {
+  void x() {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .get()
+        .then((value) {
+      {
+        if (value.exists) {
+          setState(() {
+            line2 = "${(value.data()["_al2"])}";
+            line3 = "${(value.data()["_al3"])}";
+            flat = "${(value.data()["_flat"])}";
+          });
+          print('Document data: ${(value.data()["name"])}');
+        } else {
+          print('Document does not exist on the database');
+        }
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    x();
     return Scaffold(
       body: Container(
         child: Column(
@@ -108,48 +135,59 @@ class _AccountState extends State<Account> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            "G-Block",
+                            "$line2",
                             style: commonstyle(22.0, FontWeight.w400),
                           ),
                           Text(
-                            "003",
+                            "$flat",
                             style: commonstyle(20.0, FontWeight.bold),
                           ),
-                          Text("GROUND FLOOR",
+                          Text("$line3",
                               style: commonstyle(22.0, FontWeight.w400)),
                         ],
                       ),
                     ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Container(
-                    // width: double.infinity,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black,
+                InkWell(
+                  onTap: () {
+                    FirebaseAuth auth = FirebaseAuth.instance;
+                    auth.signOut().then((res) {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => MyApp()),
+                          (Route<dynamic> route) => false);
+                    });
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Container(
+                      // width: double.infinity,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.black,
+                        ),
+                        borderRadius: BorderRadius.circular(20.0),
                       ),
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(
-                            Icons.power_settings_new,
-                            size: 40,
-                          ),
-                          Text(
-                            "LOGOUT",
-                            style: commonstyle(22.0, FontWeight.w400),
-                          ),
-                        ],
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              Icons.power_settings_new,
+                              size: 40,
+                            ),
+                            Text(
+                              "LOGOUT",
+                              style: commonstyle(22.0, FontWeight.w400),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
+                )
               ],
             )
           ],

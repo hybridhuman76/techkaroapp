@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:techkaroapp/screen/login_signup.dart';
 import 'package:techkaroapp/screen/home.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "TechKaroApp",
-      home: LoginSignupScreen(),
+      home: Selection(),
     );
   }
 }
@@ -30,3 +31,24 @@ class MyApp extends StatelessWidget {
 //     );
 //   }
 // }
+// LoginSignupScreen()
+
+class Selection extends StatefulWidget {
+  @override
+  _SelectionState createState() => _SelectionState();
+}
+
+class _SelectionState extends State<Selection> {
+  @override
+  Widget build(BuildContext context) {
+    check() {
+      if (FirebaseAuth.instance.currentUser != null) {
+        return Home();
+      } else {
+        return LoginSignupScreen();
+      }
+    }
+
+    return check();
+  }
+}

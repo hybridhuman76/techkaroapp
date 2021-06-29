@@ -1,13 +1,38 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:techkaroapp/screen/account.dart';
 import 'package:techkaroapp/screen/login_signup.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
 
+String flat = "", name = "", line2 = "", line3 = "";
+
 class _HomeState extends State<Home> {
+  void x() {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .get()
+        .then((value) {
+      {
+        if (value.exists) {
+          setState(() {
+            line2 = "${(value.data()["_al2"])}";
+            line3 = "${(value.data()["_al3"])}";
+            flat = "${(value.data()["_flat"])}";
+          });
+          print('Document data: ${(value.data()["name"])}');
+        } else {
+          print('Document does not exist on the database');
+        }
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,15 +88,14 @@ class _HomeState extends State<Home> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        "G-Block",
+                        "$line2",
                         style: commonstyle(22.0, FontWeight.w400),
                       ),
                       Text(
-                        "003",
+                        "$flat",
                         style: commonstyle(20.0, FontWeight.bold),
                       ),
-                      Text("GROUND FLOOR",
-                          style: commonstyle(22.0, FontWeight.w400)),
+                      Text("$line3", style: commonstyle(22.0, FontWeight.w400)),
                       Text("FAMILY MEMBERS - 3",
                           style: commonstyle(26.0, FontWeight.w400)),
                     ],
