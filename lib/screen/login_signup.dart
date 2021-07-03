@@ -15,7 +15,9 @@ String _email = "",
     _al3 = "",
     _flat = "",
     _name = "",
-    _mob = "";
+    _mob = "",
+    email = "",
+    password = "";
 
 class _LoginSignupScreenState extends State<LoginSignupScreen> {
   bool isMale = true;
@@ -109,21 +111,77 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                       Column(
                         children: <Widget>[
                           Padding(
-                            padding: EdgeInsets.symmetric(vertical: 30),
-                            child: builtTextField(Icon(Icons.email), "Email ID",
-                                false, true, _email),
-                          ),
+                              padding: EdgeInsets.symmetric(vertical: 30),
+                              child: Padding(
+                                padding: const EdgeInsets.only(bottom: 8.0),
+                                child: TextField(
+                                  obscureText: false,
+                                  keyboardType: TextInputType.emailAddress,
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.email),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Pallete.textColor1),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(35.0)),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Pallete.textColor1),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(35.0)),
+                                    ),
+                                    contentPadding: EdgeInsets.all(10),
+                                    hintText: "Email ID",
+                                    hintStyle: TextStyle(
+                                      fontSize: 14,
+                                      color: Pallete.textColor1,
+                                    ),
+                                  ),
+                                  onChanged: (text) {
+                                    email = text;
+                                  },
+                                ),
+                              )),
                           Padding(
-                            padding: EdgeInsets.symmetric(vertical: 20),
-                            child: builtTextField(Icon(Icons.password),
-                                "Password", true, false, _password),
-                          ),
+                              padding: EdgeInsets.symmetric(vertical: 30),
+                              child: Padding(
+                                padding: const EdgeInsets.only(bottom: 8.0),
+                                child: TextField(
+                                  obscureText: true,
+                                  keyboardType: TextInputType.emailAddress,
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.password),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Pallete.textColor1),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(35.0)),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Pallete.textColor1),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(35.0)),
+                                    ),
+                                    contentPadding: EdgeInsets.all(10),
+                                    hintText: "Password",
+                                    hintStyle: TextStyle(
+                                      fontSize: 14,
+                                      color: Pallete.textColor1,
+                                    ),
+                                  ),
+                                  onChanged: (text) {
+                                    password = text;
+                                  },
+                                ),
+                              )),
                           MaterialButton(
                               child: Text("Login"),
                               onPressed: () async {
                                 await firebaseAuth
                                     .signInWithEmailAndPassword(
-                                        email: _email, password: _password)
+                                        email: email, password: password)
                                     .then((result) {
                                   Navigator.pushReplacement(
                                     context,
