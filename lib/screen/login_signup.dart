@@ -23,11 +23,17 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
   bool isMale = true;
   bool isSignupScreen = true;
   bool isRememberMe = false;
+  Color enabled = Colors.white;
+  Color disabled = Colors.grey.withOpacity(0.2);
+  double signupelevation = 0;
+  // double loginelevation = 5;
+  double loginelevationn = 5;
 
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final firestoreInstance = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
+    double h = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Pallete.backgroundColor,
       body: Stack(
@@ -67,7 +73,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                       height: 5,
                     ),
                     Text(
-                      "Signup to Continue",
+                      "Register/Login to Continue",
                       style: TextStyle(
                         letterSpacing: 2,
                         color: Colors.white,
@@ -81,7 +87,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
           Positioned(
               top: 200,
               child: Container(
-                  height: 380,
+                  height: h - 230,
                   padding: EdgeInsets.all(20),
                   width: MediaQuery.of(context).size.width - 40,
                   margin: EdgeInsets.symmetric(horizontal: 20),
@@ -100,226 +106,229 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
-                          Container(
-                            child: Text("Login"),
-                          ),
-                          Container(
-                            child: Text("Signup"),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: <Widget>[
-                          Padding(
-                              padding: EdgeInsets.symmetric(vertical: 30),
-                              child: Padding(
-                                padding: const EdgeInsets.only(bottom: 8.0),
-                                child: TextField(
-                                  obscureText: false,
-                                  keyboardType: TextInputType.emailAddress,
-                                  decoration: InputDecoration(
-                                    prefixIcon: Icon(Icons.email),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Pallete.textColor1),
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(35.0)),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Pallete.textColor1),
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(35.0)),
-                                    ),
-                                    contentPadding: EdgeInsets.all(10),
-                                    hintText: "Email ID",
-                                    hintStyle: TextStyle(
-                                      fontSize: 14,
-                                      color: Pallete.textColor1,
-                                    ),
-                                  ),
-                                  onChanged: (text) {
-                                    email = text;
-                                  },
-                                ),
-                              )),
-                          Padding(
-                              padding: EdgeInsets.symmetric(vertical: 30),
-                              child: Padding(
-                                padding: const EdgeInsets.only(bottom: 8.0),
-                                child: TextField(
-                                  obscureText: true,
-                                  keyboardType: TextInputType.emailAddress,
-                                  decoration: InputDecoration(
-                                    prefixIcon: Icon(Icons.password),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Pallete.textColor1),
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(35.0)),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Pallete.textColor1),
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(35.0)),
-                                    ),
-                                    contentPadding: EdgeInsets.all(10),
-                                    hintText: "Password",
-                                    hintStyle: TextStyle(
-                                      fontSize: 14,
-                                      color: Pallete.textColor1,
-                                    ),
-                                  ),
-                                  onChanged: (text) {
-                                    password = text;
-                                  },
-                                ),
-                              )),
                           MaterialButton(
-                              child: Text("Login"),
-                              onPressed: () async {
-                                await firebaseAuth
-                                    .signInWithEmailAndPassword(
-                                        email: email, password: password)
-                                    .then((result) {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Home()),
-                                  );
-                                }).catchError((err) {
-                                  print(err.message);
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text("Error"),
-                                          content: Text(err.message),
-                                          actions: [
-                                            TextButton(
-                                              child: Text("Ok"),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            )
-                                          ],
-                                        );
-                                      });
+                              onPressed: () {
+                                setState(() {
+                                  loginelevationn = 5;
+                                  signupelevation = 0;
                                 });
-                              }),
-                        ],
-                      ),
-                      Column(
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: builtTextField(
-                                Icon(Icons.account_circle_outlined),
-                                "Full Name",
-                                false,
-                                false,
-                                "_name"),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: builtTextField(
-                                Icon(Icons.account_circle_outlined),
-                                "Mobile Number",
-                                false,
-                                false,
-                                "_mob"),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: builtTextField(
-                                Icon(Icons.account_circle_outlined),
-                                "Flat Number",
-                                false,
-                                false,
-                                "_flat"),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: builtTextField(
-                                Icon(Icons.account_circle_outlined),
-                                "Address Line 2",
-                                false,
-                                false,
-                                "_al2"),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: builtTextField(
-                                Icon(Icons.account_circle_outlined),
-                                "Address Line 3",
-                                false,
-                                false,
-                                "_al3"),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: builtTextField(Icon(Icons.email), "Email ID",
-                                false, true, "_email"),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: builtTextField(Icon(Icons.password),
-                                "Password", true, false, "_password"),
-                          ),
+                              },
+                              elevation: loginelevationn,
+                              height: 50,
+                              minWidth:
+                                  (MediaQuery.of(context).size.width - 80) / 2,
+                              child: Text("LogIn"),
+                              color: enabled),
                           MaterialButton(
-                            child: Text("Create Account"),
-                            onPressed: () async {
-                              await firebaseAuth
-                                  .createUserWithEmailAndPassword(
-                                      email: _email, password: _password)
-                                  .then((value) {
-                                if (value.user != null) {
-                                  firestoreInstance
-                                      .collection("users")
-                                      .doc(value.user?.uid)
-                                      .set({
-                                    "name": _name,
-                                    "mob": _mob,
-                                    "email": _email,
-                                    "al2": _al2,
-                                    "al3": _al3,
-                                    "flat": _flat,
-                                  });
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => Home(),
-                                      ));
-                                }
-                              }).catchError((err) {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Text("Error"),
-                                        content: Text(err.message),
-                                        // content:
-                                        //     Text("Invalid content, try again!"),
-                                        actions: [
-                                          TextButton(
-                                            child: Text("Ok"),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                          )
-                                        ],
-                                      );
-                                    });
+                            elevation: signupelevation,
+                            onPressed: () {
+                              setState(() {
+                                loginelevationn = 0;
+                                signupelevation = 5;
                               });
                             },
+                            height: 50,
+                            minWidth:
+                                (MediaQuery.of(context).size.width - 80) / 2,
+                            child: Text("Signup"),
+                            color: enabled,
                           ),
                         ],
                       ),
+                      funcdecide(loginelevationn)
                     ],
                   ))))
         ],
       ),
+    );
+  }
+
+  login(firebaseAuth, context) {
+    return Column(
+      children: <Widget>[
+        Padding(
+            padding: EdgeInsets.symmetric(vertical: 20),
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: TextField(
+                obscureText: false,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.email),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Pallete.textColor1),
+                    borderRadius: BorderRadius.all(Radius.circular(35.0)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Pallete.textColor1),
+                    borderRadius: BorderRadius.all(Radius.circular(35.0)),
+                  ),
+                  contentPadding: EdgeInsets.all(10),
+                  hintText: "Email ID",
+                  hintStyle: TextStyle(
+                    fontSize: 14,
+                    color: Pallete.textColor1,
+                  ),
+                ),
+                onChanged: (text) {
+                  email = text;
+                },
+              ),
+            )),
+        Padding(
+            padding: EdgeInsets.symmetric(vertical: 20),
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: TextField(
+                obscureText: true,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.password),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Pallete.textColor1),
+                    borderRadius: BorderRadius.all(Radius.circular(35.0)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Pallete.textColor1),
+                    borderRadius: BorderRadius.all(Radius.circular(35.0)),
+                  ),
+                  contentPadding: EdgeInsets.all(10),
+                  hintText: "Password",
+                  hintStyle: TextStyle(
+                    fontSize: 14,
+                    color: Pallete.textColor1,
+                  ),
+                ),
+                onChanged: (text) {
+                  password = text;
+                },
+              ),
+            )),
+        MaterialButton(
+            child: Text("Login"),
+            onPressed: () async {
+              await firebaseAuth
+                  .signInWithEmailAndPassword(email: email, password: password)
+                  .then((result) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => Home()),
+                );
+              }).catchError((err) {
+                print(err.message);
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text("Error"),
+                        content: Text(err.message),
+                        actions: [
+                          TextButton(
+                            child: Text("Ok"),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          )
+                        ],
+                      );
+                    });
+              });
+            }),
+      ],
+    );
+  }
+
+  funcdecide(lognielevation) {
+    if (lognielevation == 5) {
+      return login(firebaseAuth, context);
+    } else {
+      return signup(firebaseAuth, context);
+    }
+  }
+
+  signup(firebaseAuth, context) {
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          child: builtTextField(Icon(Icons.account_circle_outlined),
+              "Full Name", false, false, "_name"),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          child: builtTextField(
+              Icon(Icons.phone), "Mobile Number", false, false, "_mob"),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          child: builtTextField(
+              Icon(Icons.home), "Flat Number", false, false, "_flat"),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          child: builtTextField(
+              Icon(Icons.home), "Address Line 2", false, false, "_al2"),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          child: builtTextField(
+              Icon(Icons.home), "Address Line 3", false, false, "_al3"),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          child: builtTextField(
+              Icon(Icons.email), "Email ID", false, true, "_email"),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          child: builtTextField(
+              Icon(Icons.password), "Password", true, false, "_password"),
+        ),
+        MaterialButton(
+          child: Text("Create Account"),
+          onPressed: () async {
+            await firebaseAuth
+                .createUserWithEmailAndPassword(
+                    email: _email, password: _password)
+                .then((value) {
+              if (value.user != null) {
+                firestoreInstance.collection("users").doc(value.user?.uid).set({
+                  "name": _name,
+                  "mob": _mob,
+                  "email": _email,
+                  "al2": _al2,
+                  "al3": _al3,
+                  "flat": _flat,
+                });
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Home(),
+                    ));
+              }
+            }).catchError((err) {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Error"),
+                      content: Text(err.message),
+                      // content:
+                      //     Text("Invalid content, try again!"),
+                      actions: [
+                        TextButton(
+                          child: Text("Ok"),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        )
+                      ],
+                    );
+                  });
+            });
+          },
+        ),
+      ],
     );
   }
 
@@ -371,178 +380,3 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
     );
   }
 }
-
-/*
- Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isSignupScreen = false;
-                            });
-                          },
-                          child: Column(
-                            children: [
-                              Text(
-                                "LOGIN",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: !isSignupScreen
-                                      ? Pallete.textColor1
-                                      : Pallete.activeColor,
-                                ),
-                              ),
-                              if (isSignupScreen)
-                                Container(
-                                  margin: EdgeInsets.only(top: 3),
-                                  height: 2,
-                                  width: 55,
-                                  color: Colors.orange,
-                                ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    isSignupScreen = true;
-                                  });
-                                },
-                                child: Column(
-                                  children: [
-                                    Text("SIGNUP",
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: isSignupScreen
-                                              ? Pallete.activeColor
-                                              : Pallete.activeColor,
-                                        )),
-                                    if (isSignupScreen)
-                                      Container(
-                                        margin: EdgeInsets.only(top: 3),
-                                        height: 2,
-                                        width: 55,
-                                        color: Colors.orange,
-                                      ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          isSignupScreen = true;
-                                        });
-                                      },
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                    Container(
-                        margin: EdgeInsets.only(
-                          top: 20,
-                        ),
-                        child: Column(
-                          children: [
-                            builtTextField(
-                                MaterialCommunityIcons.account_outline,
-                                "User Name",
-                                false,
-                                false),
-                            builtTextField(MaterialCommunityIcons.email_outline,
-                                "email", false, true),
-                            builtTextField(MaterialCommunityIcons.lock_outline,
-                                "password", true, false),
-                            Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 10,
-                                  left: 10,
-                                ),
-                                child: Row(children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        isMale = true;
-                                      });
-                                    },
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: 30,
-                                          height: 30,
-                                          margin: EdgeInsets.only(right: 8),
-                                          decoration: BoxDecoration(
-                                              color: isMale
-                                                  ? Pallete.textColor2
-                                                  : Colors.transparent,
-                                              border: Border.all(
-                                                  width: 1,
-                                                  color: isMale
-                                                      ? Colors.transparent
-                                                      : Pallete.textColor2),
-                                              borderRadius:
-                                                  BorderRadius.circular(15)),
-                                          child: Icon(
-                                            MaterialCommunityIcons
-                                                .account_outline,
-                                            color: isMale
-                                                ? Colors.white
-                                                : Pallete.iconColor,
-                                          ),
-                                        ),
-                                        Text(
-                                          "Male",
-                                          style: TextStyle(
-                                              color: Pallete.textColor1),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 30,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        isMale = false;
-                                      });
-                                    },
-                                    child: Row(children: [
-                                      Container(
-                                        width: 30,
-                                        height: 30,
-                                        margin: EdgeInsets.only(right: 8),
-                                        decoration: BoxDecoration(
-                                            color: isMale
-                                                ? Colors.transparent
-                                                : Pallete.textColor2,
-                                            border: Border.all(
-                                                width: 1,
-                                                color: isMale
-                                                    ? Colors.transparent
-                                                    : Pallete.textColor1),
-                                            borderRadius:
-                                                BorderRadius.circular(15)),
-                                        child: Icon(
-                                          MaterialCommunityIcons
-                                              .account_outline,
-                                          color: isMale
-                                              ? Colors.transparent
-                                              : Colors.white,
-                                        ),
-                                      ),
-                                    ]),
-                                  ),
-                                  Text(
-                                    "Female",
-                                    style: TextStyle(color: Pallete.textColor1),
-                                  )
-                                ]))
-                          ],
-                        ))
-                  ],
-                ),
-                */

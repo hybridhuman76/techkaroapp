@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:techkaroapp/screen/account.dart';
@@ -12,6 +14,23 @@ class Home extends StatefulWidget {
 String flat = "", name = "", line2 = "", line3 = "";
 
 class _HomeState extends State<Home> {
+  bool isSwitched = false;
+  var textValue = 'Switch is OFF';
+
+  void toggleSwitch(bool value) {
+    if (isSwitched == false) {
+      setState(() {
+        isSwitched = true;
+        textValue = 'status set to outdoor';
+      });
+    } else {
+      setState(() {
+        isSwitched = false;
+        textValue = 'status set to indoor';
+      });
+    }
+  }
+
   void x() {
     FirebaseFirestore.instance
         .collection('users')
@@ -42,22 +61,8 @@ class _HomeState extends State<Home> {
         child: Column(
           children: <Widget>[
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginSignupScreen()));
-                      },
-                      icon: Icon(
-                        Icons.menu_sharp,
-                        size: 30,
-                      )),
-                ),
                 Padding(
                   padding: EdgeInsets.all(10),
                   child: IconButton(
@@ -71,6 +76,31 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 )
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Text(
+                  "INDOOR",
+                  style: commonstyle(20.0, FontWeight.bold),
+                ),
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Transform.scale(
+                      scale: 3,
+                      child: Switch(
+                        onChanged: toggleSwitch,
+                        value: isSwitched,
+                        activeColor: Colors.grey,
+                        activeTrackColor: Colors.orange,
+                        inactiveThumbColor: Colors.green,
+                        inactiveTrackColor: Colors.orange,
+                      )),
+                ]),
+                Text(
+                  "OUTDOOR",
+                  style: commonstyle(20.0, FontWeight.bold),
+                ),
               ],
             ),
             Padding(
