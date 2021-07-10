@@ -117,7 +117,10 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                               height: 50,
                               minWidth:
                                   (MediaQuery.of(context).size.width - 80) / 2,
-                              child: Text("LogIn"),
+                              child: Text(
+                                "LogIn",
+                                style: TextStyle(color: Colors.black),
+                              ),
                               color: enabled),
                           MaterialButton(
                             elevation: signupelevation,
@@ -130,7 +133,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                             height: 50,
                             minWidth:
                                 (MediaQuery.of(context).size.width - 80) / 2,
-                            child: Text("Signup"),
+                            child: Text("Signup",
+                                style: TextStyle(color: Colors.black)),
                             color: enabled,
                           ),
                         ],
@@ -205,7 +209,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
               ),
             )),
         MaterialButton(
-            child: Text("Login"),
+            child: Text("Login", style: TextStyle(color: Colors.black)),
             onPressed: () async {
               await firebaseAuth
                   .signInWithEmailAndPassword(email: email, password: password)
@@ -285,7 +289,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
               Icon(Icons.password), "Password", true, false, "_password"),
         ),
         MaterialButton(
-          child: Text("Create Account"),
+          child: Text("Create Account", style: TextStyle(color: Colors.black)),
           onPressed: () async {
             await firebaseAuth
                 .createUserWithEmailAndPassword(
@@ -299,6 +303,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                   "al2": _al2,
                   "al3": _al3,
                   "flat": _flat,
+                  "isout": false,
                 });
                 Navigator.pushReplacement(
                     context,
@@ -342,6 +347,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: TextField(
+        cursorColor: Colors.black,
         obscureText: isPassword,
         keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
         decoration: InputDecoration(

@@ -3,6 +3,7 @@ import 'package:techkaroapp/main.dart';
 import 'home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
 
 class Account extends StatefulWidget {
   @override
@@ -10,8 +11,19 @@ class Account extends StatefulWidget {
 }
 
 String flat = "", name = "", line2 = "", line3 = "";
+bool islight = false;
 
 class _AccountState extends State<Account> {
+  void toggleMode(bool value) {
+    if (islight == false) {
+      AdaptiveTheme.of(context).setDark();
+      islight = true;
+    } else {
+      AdaptiveTheme.of(context).setLight();
+      islight = false;
+    }
+  }
+
   void x() {
     FirebaseFirestore.instance
         .collection('users')
@@ -57,23 +69,6 @@ class _AccountState extends State<Account> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                Text(
-                  "INDOOR",
-                  style: commonstyle(20.0, FontWeight.bold),
-                ),
-                Icon(
-                  Icons.toggle_off_outlined,
-                  size: 60,
-                ),
-                Text(
-                  "OUTDOOR",
-                  style: commonstyle(20.0, FontWeight.bold),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
                 Container(
                   color: Colors.amber.withOpacity(0.0),
                   child: Padding(
@@ -91,12 +86,8 @@ class _AccountState extends State<Account> {
                             ],
                           ),
                           Text(
-                            "Add Members",
+                            "Members",
                             style: commonstyle(20.0, FontWeight.bold),
-                          ),
-                          Text(
-                            "ADDRESS",
-                            style: commonstyle(24.0, FontWeight.bold),
                           ),
                         ],
                       )),
@@ -189,7 +180,21 @@ class _AccountState extends State<Account> {
                   ),
                 )
               ],
-            )
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Text("light"),
+                    Switch(value: islight, onChanged: toggleMode),
+                    Text("dark")
+                  ],
+                ),
+                Text("Mode")
+              ],
+            ),
           ],
         ),
       ),

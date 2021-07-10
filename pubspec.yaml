@@ -28,6 +28,7 @@ dependencies:
   cloud_firestore:
   firebase_auth: 
   firebase_database:
+  adaptive_theme:
 
 
   flutter_icons: ^1.1.0

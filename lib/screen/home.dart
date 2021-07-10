@@ -1,9 +1,8 @@
-import 'dart:typed_data';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:techkaroapp/screen/account.dart';
 import 'package:techkaroapp/screen/login_signup.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Home extends StatefulWidget {
@@ -14,6 +13,8 @@ class Home extends StatefulWidget {
 String flat = "", name = "", line2 = "", line3 = "";
 
 class _HomeState extends State<Home> {
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final firestoreInstance = FirebaseFirestore.instance;
   bool isSwitched = false;
   var textValue = 'Switch is OFF';
 
@@ -23,10 +24,31 @@ class _HomeState extends State<Home> {
         isSwitched = true;
         textValue = 'status set to outdoor';
       });
+      firestoreInstance
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser.uid)
+          .set({
+        "isout": true,
+      });
+
+      // firestoreInstance.collection("users").doc(user.uid).set({
+      //   "name": _name,
+      //   "mob": _mob,
+      //   "email": _email,
+      //   "al2": _al2,
+      //   "al3": _al3,
+      //   "flat": _flat,
+      // });
     } else {
       setState(() {
         isSwitched = false;
         textValue = 'status set to indoor';
+      });
+      firestoreInstance
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser.uid)
+          .set({
+        "isout": false,
       });
     }
   }
