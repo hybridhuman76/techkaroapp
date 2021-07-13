@@ -49,155 +49,205 @@ class _AccountState extends State<Account> {
   Widget build(BuildContext context) {
     x();
     return Scaffold(
-      body: Container(
+      body: SingleChildScrollView(
+          child: Container(
         child: Column(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.fromLTRB(0, 30, 10, 20),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.arrow_back_ios),
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Home()));
+                  InkWell(
+                    child: Container(
+                      child: Center(
+                          child: Icon(Icons.arrow_upward, color: Colors.white)),
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                          gradient: lineardesign(
+                              Alignment.bottomLeft, Alignment.topRight),
+                          borderRadius: BorderRadius.circular(40)),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
                     },
+                  )
+                ],
+              ),
+            ),
+            SingleChildScrollView(
+              child: Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                    child: Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Image.asset("assets/acc.png"),
+                          Text(
+                            "Edit Members",
+                            style: commonstyle(20, FontWeight.normal),
+                          )
+                        ],
+                      ),
+                      height: 130,
+                      width: 150,
+                      // width: double.infinity,
+                      decoration: BoxDecoration(
+                        gradient: lineardesign(
+                            Alignment.centerRight, Alignment.centerLeft),
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                    child: Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Image.asset("assets/acc.png"),
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                "5",
+                                style: commonstyle(40, FontWeight.normal),
+                              ),
+                              Text(
+                                "View",
+                                style: commonstyle(20, FontWeight.normal),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      height: 130,
+                      width: 170,
+                      // width: double.infinity,
+                      decoration: BoxDecoration(
+                        gradient: lineardesign(
+                            Alignment.centerRight, Alignment.centerLeft),
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
                   ),
                 ],
               ),
+              scrollDirection: Axis.horizontal,
+            ),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Container(
+                width: double.infinity,
+                height: 130,
+                decoration: BoxDecoration(
+                  gradient:
+                      lineardesign(Alignment.centerRight, Alignment.centerLeft),
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+              ),
+            ),
+            Container(
+              child: GridView.count(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  primary: true,
+                  crossAxisCount: 2,
+                  children: <Widget>[
+                    cont(Icons.chat, "About Us"),
+                    cont(Icons.supervised_user_circle_sharp, "Bills"),
+                  ]),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                Container(
-                  color: Colors.amber.withOpacity(0.0),
-                  child: Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Column(
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Icon(Icons.minimize),
-                              Icon(
-                                Icons.family_restroom,
-                                size: 60,
-                              ),
-                              Icon(Icons.add),
-                            ],
-                          ),
-                          Text(
-                            "Members",
-                            style: commonstyle(20.0, FontWeight.bold),
-                          ),
-                        ],
-                      )),
-                ),
-                Container(
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        "5",
-                        style: commonstyle(28.0, FontWeight.w400),
-                      ),
-                      Icon(
-                        Icons.family_restroom,
-                        size: 60,
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Container(
-                    // width: double.infinity,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black,
-                      ),
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(15),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "$line2",
-                            style: commonstyle(22.0, FontWeight.w400),
-                          ),
-                          Text(
-                            "$flat",
-                            style: commonstyle(20.0, FontWeight.bold),
-                          ),
-                          Text("$line3",
-                              style: commonstyle(22.0, FontWeight.w400)),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    FirebaseAuth auth = FirebaseAuth.instance;
-                    auth.signOut().then((res) {
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(builder: (context) => MyApp()),
-                          (Route<dynamic> route) => false);
-                    });
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Container(
-                      // width: double.infinity,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.black,
-                        ),
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.power_settings_new,
-                              size: 40,
-                            ),
-                            Text(
-                              "LOGOUT",
-                              style: commonstyle(22.0, FontWeight.w400),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
+                Column(
                   children: <Widget>[
-                    Text("light"),
-                    Switch(value: islight, onChanged: toggleMode),
-                    Text("dark")
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      child: Container(
+                        child: Switch(value: islight, onChanged: toggleMode),
+                        height: 45,
+                        width: 160,
+                        decoration: BoxDecoration(
+                          gradient: lineardesign(
+                              Alignment.centerRight, Alignment.centerLeft),
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 10),
+                      child: Container(
+                        child: Switch(value: islight, onChanged: toggleMode),
+                        height: 45,
+                        width: 160,
+                        decoration: BoxDecoration(
+                          gradient: lineardesign(
+                              Alignment.centerRight, Alignment.centerLeft),
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                    )
                   ],
                 ),
-                Text("Mode")
+                Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      child: Container(
+                        child: Center(
+                          child: Text("Notifications",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                        height: 45,
+                        width: 160,
+                        decoration: BoxDecoration(
+                          gradient: lineardesign(
+                              Alignment.centerRight, Alignment.centerLeft),
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                        padding: EdgeInsets.only(bottom: 10),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MyApp()));
+                          },
+                          child: Container(
+                            height: 45,
+                            width: 160,
+                            decoration: BoxDecoration(
+                              gradient: lineardesign(
+                                  Alignment.centerRight, Alignment.centerLeft),
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                          ),
+                        ))
+                  ],
+                )
               ],
-            ),
+            )
           ],
         ),
-      ),
+      )),
     );
   }
 }
+
+
+// Row(
+//                   children: <Widget>[
+//                     Text("light"),
+//                     Switch(value: islight, onChanged: toggleMode),
+//                     Text("dark")
+//                   ],
+//                 ),

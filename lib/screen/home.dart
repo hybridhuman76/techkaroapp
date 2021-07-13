@@ -82,45 +82,51 @@ class _HomeState extends State<Home> {
           child: Container(
         child: Column(
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: IconButton(
-                    onPressed: () {
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 30, 10, 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  InkWell(
+                    child: Container(
+                      child: Center(
+                          child: Image.asset("assets/acc.png", height: 25)),
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                          gradient: lineardesign(
+                              Alignment.bottomLeft, Alignment.topRight),
+                          borderRadius: BorderRadius.circular(40)),
+                    ),
+                    onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Account()));
                     },
-                    icon: Icon(
-                      Icons.account_circle_outlined,
-                      size: 30,
-                    ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 Text(
-                  "INDOOR",
+                  "Indoor",
                   style: commonstyle(20.0, FontWeight.bold),
                 ),
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Transform.scale(
-                      scale: 3,
+                      scale: 2,
                       child: Switch(
                         onChanged: toggleSwitch,
                         value: isSwitched,
-                        activeColor: Colors.grey,
-                        activeTrackColor: Colors.orange,
+                        activeColor: Colors.red,
+                        activeTrackColor: Color.fromRGBO(241, 227, 227, 1),
                         inactiveThumbColor: Colors.green,
-                        inactiveTrackColor: Colors.orange,
+                        inactiveTrackColor: Color.fromRGBO(241, 227, 227, 1),
                       )),
                 ]),
                 Text(
-                  "OUTDOOR",
+                  "Outdoor",
                   style: commonstyle(20.0, FontWeight.bold),
                 ),
               ],
@@ -128,31 +134,38 @@ class _HomeState extends State<Home> {
             Padding(
               padding: EdgeInsets.all(10),
               child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.black,
-                  ),
-                  borderRadius: BorderRadius.circular(20.0),
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      child: Icon(Icons.home, size: 80),
+                      padding: EdgeInsets.all(20),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "text",
+                          style: commonstyle(30.0, FontWeight.bold),
+                        ),
+                        Text(
+                          "text2",
+                          style: commonstyle(18.0, FontWeight.normal),
+                        ),
+                        Text(
+                          "text3",
+                          style: commonstyle(18.0, FontWeight.normal),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
-                child: Padding(
-                  padding: EdgeInsets.all(15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        "$line2",
-                        style: commonstyle(22.0, FontWeight.w400),
-                      ),
-                      Text(
-                        "$flat",
-                        style: commonstyle(20.0, FontWeight.bold),
-                      ),
-                      Text("$line3", style: commonstyle(22.0, FontWeight.w400)),
-                      Text("FAMILY MEMBERS - 3",
-                          style: commonstyle(26.0, FontWeight.w400)),
-                    ],
-                  ),
+                width: double.infinity,
+                height: 130,
+                decoration: BoxDecoration(
+                  gradient:
+                      lineardesign(Alignment.centerRight, Alignment.centerLeft),
+                  borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
             ),
@@ -160,82 +173,83 @@ class _HomeState extends State<Home> {
               child: Row(
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(10),
+                    padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                     child: Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "  Bill overdue!",
+                            style: commonstyle(20.0, FontWeight.bold),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              Text(
+                                "₹ 6969",
+                                style: commonstyle(30.0, FontWeight.bold),
+                              ),
+                              MaterialButton(
+                                onPressed: () {},
+                                child: Text("Pay"),
+                                color: Colors.red[800],
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18.0),
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+
+                      height: 130,
+                      width: 250,
                       // width: double.infinity,
                       decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.black,
-                        ),
+                        gradient: lineardesign(
+                            Alignment.centerRight, Alignment.centerLeft),
                         borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "BILL OVERDUE",
-                              style: commonstyle(22.0, FontWeight.w400),
-                            ),
-                            Text(
-                              "2089",
-                              style: commonstyle(20.0, FontWeight.bold),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: <Widget>[
-                                Text("JUNE 2021",
-                                    style: commonstyle(18.0, FontWeight.w800)),
-                                MaterialButton(
-                                  color: Colors.amber,
-                                  child: Text("PAY"),
-                                  onPressed: () {},
-                                )
-                              ],
-                            )
-                          ],
-                        ),
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(10),
+                    padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                     child: Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "  Complaint",
+                            style: commonstyle(20.0, FontWeight.bold),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              Text(
+                                "# 69",
+                                style: commonstyle(30.0, FontWeight.bold),
+                              ),
+                              MaterialButton(
+                                onPressed: () {},
+                                child: Text("Details"),
+                                color: Colors.red[800],
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18.0),
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                      height: 130,
+                      width: 250,
                       // width: double.infinity,
                       decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.black,
-                        ),
+                        gradient: lineardesign(
+                            Alignment.centerRight, Alignment.centerLeft),
                         borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "COMPLAINT",
-                              style: commonstyle(22.0, FontWeight.w400),
-                            ),
-                            Text(
-                              "TICKET-G23",
-                              style: commonstyle(20.0, FontWeight.bold),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: <Widget>[
-                                Text("Door",
-                                    style: commonstyle(18.0, FontWeight.w800)),
-                                MaterialButton(
-                                  color: Colors.amber,
-                                  child: Text("mark as resolved"),
-                                  onPressed: () {},
-                                )
-                              ],
-                            )
-                          ],
-                        ),
                       ),
                     ),
                   ),
@@ -262,15 +276,14 @@ class _HomeState extends State<Home> {
                 height: 50,
                 // width: 300,
                 decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.black,
-                  ),
+                  gradient:
+                      lineardesign(Alignment.centerRight, Alignment.centerLeft),
                   borderRadius: BorderRadius.circular(20.0),
                 ),
                 child: Center(
                     child: Text(
-                  "HELPDESK & SUPPORT",
-                  style: commonstyle(20.0, FontWeight.bold),
+                  "Helpdesk & Support",
+                  style: commonstyle(16.0, FontWeight.bold),
                 )),
               ),
             )
@@ -286,26 +299,32 @@ cont(icon, text) {
       padding: EdgeInsets.all(10),
       child: Container(
           decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.black,
-            ),
+            gradient: lineardesign(Alignment.topRight, Alignment.bottomLeft),
             borderRadius: BorderRadius.circular(20.0),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Icon(
-                icon,
-                size: 40,
-              ),
+              Icon(icon, size: 40, color: Colors.white),
               Text(
                 text,
-                style: commonstyle(20.0, FontWeight.bold),
+                style: commonstyle(
+                  20.0,
+                  FontWeight.bold,
+                ),
               )
             ],
           )));
 }
 
 commonstyle(fontsize, weight) {
-  return TextStyle(fontSize: fontsize, fontWeight: weight);
+  return TextStyle(fontSize: fontsize, fontWeight: weight, color: Colors.white);
+}
+
+lineardesign(start, end) {
+  return LinearGradient(
+    colors: [Colors.purple[800], Color.fromRGBO(64, 151, 179, 1)],
+    begin: start,
+    end: end,
+  );
 }

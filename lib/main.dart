@@ -24,12 +24,12 @@ class MyApp extends StatelessWidget {
     return AdaptiveTheme(
       light: ThemeData(
           brightness: Brightness.light,
-          primarySwatch: Colors.green,
-          accentColor: Colors.green),
+          primarySwatch: Colors.blue,
+          accentColor: Colors.black),
       dark: ThemeData(
           brightness: Brightness.dark,
           primarySwatch: Colors.grey,
-          accentColor: Colors.green),
+          accentColor: Colors.black),
       initial: AdaptiveThemeMode.light,
       builder: (theme, darkTheme) => MaterialApp(
         debugShowCheckedModeBanner: false,

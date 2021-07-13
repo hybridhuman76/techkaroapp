@@ -107,6 +107,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
                           MaterialButton(
+                              splashColor: Colors.transparent,
                               onPressed: () {
                                 setState(() {
                                   loginelevationn = 5;
@@ -123,6 +124,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                               ),
                               color: enabled),
                           MaterialButton(
+                            splashColor: Colors.transparent,
                             elevation: signupelevation,
                             onPressed: () {
                               setState(() {
@@ -187,7 +189,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                 obscureText: true,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.password),
+                  prefixIcon: Icon(Icons.lock),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Pallete.textColor1),
                     borderRadius: BorderRadius.all(Radius.circular(35.0)),
@@ -286,7 +288,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
         Padding(
           padding: EdgeInsets.symmetric(vertical: 10),
           child: builtTextField(
-              Icon(Icons.password), "Password", true, false, "_password"),
+              Icon(Icons.lock), "Password", true, false, "_password"),
         ),
         MaterialButton(
           child: Text("Create Account", style: TextStyle(color: Colors.black)),
