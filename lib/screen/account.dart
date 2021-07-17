@@ -24,30 +24,30 @@ class _AccountState extends State<Account> {
     }
   }
 
-  void x() {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser?.uid)
-        .get()
-        .then((value) {
-      {
-        if (value.exists) {
-          setState(() {
-            line2 = "${(value.data()["al2"])}";
-            line3 = "${(value.data()["al3"])}";
-            flat = "${(value.data()["flat"])}";
-          });
-          // print('Document data: ${(value.data()["name"])}');
-        } else {
-          print('Document does not exist on the database');
-        }
-      }
-    });
-  }
+  // void x() {
+  //   FirebaseFirestore.instance
+  //       .collection('users')
+  //       .doc(FirebaseAuth.instance.currentUser?.uid)
+  //       .get()
+  //       .then((value) {
+  //     {
+  //       if (value.exists) {
+  //         setState(() {
+  //           line2 = "${(value.data()["al2"])}";
+  //           line3 = "${(value.data()["al3"])}";
+  //           flat = "${(value.data()["flat"])}";
+  //         });
+  //         // print('Document data: ${(value.data()["name"])}');
+  //       } else {
+  //         print('Document does not exist on the database');
+  //       }
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
-    x();
+    // x();
     return Scaffold(
       body: SingleChildScrollView(
           child: Container(
@@ -85,10 +85,13 @@ class _AccountState extends State<Account> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
-                          Image.asset("assets/acc.png"),
+                          Image.asset(
+                            "assets/fam.png",
+                            height: 70,
+                          ),
                           Text(
                             "Edit Members",
-                            style: commonstyle(20, FontWeight.normal),
+                            style: commonstyle(20.0, FontWeight.normal),
                           )
                         ],
                       ),
@@ -108,16 +111,17 @@ class _AccountState extends State<Account> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
-                          Image.asset("assets/acc.png"),
-                          Row(
+                          Image.asset("assets/fam.png"),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Text(
                                 "5",
-                                style: commonstyle(40, FontWeight.normal),
+                                style: commonstyle(40.0, FontWeight.normal),
                               ),
                               Text(
                                 "View",
-                                style: commonstyle(20, FontWeight.normal),
+                                style: commonstyle(20.0, FontWeight.normal),
                               ),
                             ],
                           )
@@ -140,6 +144,50 @@ class _AccountState extends State<Account> {
             Padding(
               padding: EdgeInsets.all(10),
               child: Container(
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      child: Image.asset(
+                        "assets/home.png",
+                        height: 50,
+                        width: 50,
+                      ),
+                      padding: EdgeInsets.all(20),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "$flat",
+                          style: commonstyle(30.0, FontWeight.bold),
+                        ),
+                        Text(
+                          "$line2",
+                          style: commonstyle(18.0, FontWeight.normal),
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              "$line3",
+                              style: commonstyle(18.0, FontWeight.normal),
+                            ),
+                            Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: MaterialButton(
+                                  onPressed: () {},
+                                  child: Text("Edit"),
+                                  color: Colors.red[800],
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                  ),
+                                ))
+                          ],
+                        )
+                      ],
+                    )
+                  ],
+                ),
                 width: double.infinity,
                 height: 130,
                 decoration: BoxDecoration(
@@ -156,8 +204,9 @@ class _AccountState extends State<Account> {
                   primary: true,
                   crossAxisCount: 2,
                   children: <Widget>[
-                    cont(Icons.chat, "About Us"),
-                    cont(Icons.supervised_user_circle_sharp, "Bills"),
+                    cont(
+                        Image.asset("assets/logo.png", height: 40), "About Us"),
+                    cont(Image.asset("assets/bill.png", height: 40), "Bills"),
                   ]),
             ),
             Row(
@@ -166,31 +215,23 @@ class _AccountState extends State<Account> {
                 Column(
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20),
+                      padding: EdgeInsets.only(top: 20),
                       child: Container(
                         child: Switch(value: islight, onChanged: toggleMode),
                         height: 45,
-                        width: 160,
-                        decoration: BoxDecoration(
-                          gradient: lineardesign(
-                              Alignment.centerRight, Alignment.centerLeft),
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
+                        width: 80,
                       ),
                     ),
+                    Text("switch mode"),
                     Padding(
-                      padding: EdgeInsets.only(bottom: 10),
+                      padding: EdgeInsets.only(bottom: 0),
                       child: Container(
                         child: Switch(value: islight, onChanged: toggleMode),
                         height: 45,
-                        width: 160,
-                        decoration: BoxDecoration(
-                          gradient: lineardesign(
-                              Alignment.centerRight, Alignment.centerLeft),
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
+                        width: 80,
                       ),
-                    )
+                    ),
+                    Text("change font size")
                   ],
                 ),
                 Column(
@@ -217,12 +258,22 @@ class _AccountState extends State<Account> {
                         padding: EdgeInsets.only(bottom: 10),
                         child: InkWell(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MyApp()));
+                            FirebaseAuth auth = FirebaseAuth.instance;
+                            auth.signOut().then((res) {
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MyApp()),
+                                  (Route<dynamic> route) => false);
+                            });
                           },
                           child: Container(
+                            child: Center(
+                              child: Text("logOut",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                            ),
                             height: 45,
                             width: 160,
                             decoration: BoxDecoration(

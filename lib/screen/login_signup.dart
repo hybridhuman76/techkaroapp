@@ -300,10 +300,10 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
               if (value.user != null) {
                 firestoreInstance.collection("users").doc(value.user?.uid).set({
                   "name": _name,
-                  "mob": _mob,
+                  "mobile": _mob,
                   "email": _email,
-                  "al2": _al2,
-                  "al3": _al3,
+                  "society": _al2,
+                  "locality": _al3,
                   "flat": _flat,
                   "isout": false,
                 });

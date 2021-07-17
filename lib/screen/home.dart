@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:techkaroapp/screen/account.dart';
 import 'package:techkaroapp/screen/login_signup.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -24,21 +23,6 @@ class _HomeState extends State<Home> {
         isSwitched = true;
         textValue = 'status set to outdoor';
       });
-      firestoreInstance
-          .collection("users")
-          .doc(FirebaseAuth.instance.currentUser.uid)
-          .set({
-        "isout": true,
-      });
-
-      // firestoreInstance.collection("users").doc(user.uid).set({
-      //   "name": _name,
-      //   "mob": _mob,
-      //   "email": _email,
-      //   "al2": _al2,
-      //   "al3": _al3,
-      //   "flat": _flat,
-      // });
     } else {
       setState(() {
         isSwitched = false;
@@ -62,9 +46,10 @@ class _HomeState extends State<Home> {
       {
         if (value.exists) {
           setState(() {
-            line2 = "${(value.data()["al2"])}";
-            line3 = "${(value.data()["al3"])}";
+            line2 = "${(value.data()["society"])}";
+            line3 = "${(value.data()["locality"])}";
             flat = "${(value.data()["flat"])}";
+            name = "${(value.data()["name"])}";
           });
           // print('Document data: ${(value.data()["name"])}');
         } else {
@@ -85,8 +70,16 @@ class _HomeState extends State<Home> {
             Padding(
               padding: EdgeInsets.fromLTRB(0, 30, 10, 20),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Text(
+                      "Hey, $name",
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
+                    ),
+                  ),
                   InkWell(
                     child: Container(
                       child: Center(
@@ -111,7 +104,7 @@ class _HomeState extends State<Home> {
               children: <Widget>[
                 Text(
                   "Indoor",
-                  style: commonstyle(20.0, FontWeight.bold),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Transform.scale(
@@ -127,7 +120,7 @@ class _HomeState extends State<Home> {
                 ]),
                 Text(
                   "Outdoor",
-                  style: commonstyle(20.0, FontWeight.bold),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -137,7 +130,11 @@ class _HomeState extends State<Home> {
                 child: Row(
                   children: <Widget>[
                     Padding(
-                      child: Icon(Icons.home, size: 80),
+                      child: Image.asset(
+                        "assets/home.png",
+                        height: 50,
+                        width: 50,
+                      ),
                       padding: EdgeInsets.all(20),
                     ),
                     Column(
@@ -145,15 +142,15 @@ class _HomeState extends State<Home> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          "text",
+                          "$flat",
                           style: commonstyle(30.0, FontWeight.bold),
                         ),
                         Text(
-                          "text2",
+                          "$line2",
                           style: commonstyle(18.0, FontWeight.normal),
                         ),
                         Text(
-                          "text3",
+                          "$line3",
                           style: commonstyle(18.0, FontWeight.normal),
                         ),
                       ],
@@ -264,10 +261,12 @@ class _HomeState extends State<Home> {
                   primary: true,
                   crossAxisCount: 2,
                   children: <Widget>[
-                    cont(Icons.chat, "Message"),
-                    cont(Icons.supervised_user_circle_sharp, "Services"),
-                    cont(Icons.bookmark_rounded, "Billing"),
-                    cont(Icons.visibility_off_sharp, "Visitors"),
+                    cont(Image.asset("assets/chat.png", height: 40), "Message"),
+                    cont(
+                        Image.asset("assets/cart.png", height: 40), "Services"),
+                    cont(Image.asset("assets/bill.png", height: 40), "Billing"),
+                    cont(Image.asset("assets/briefcase.png", height: 40),
+                        "Visitors"),
                   ]),
             ),
             Padding(
@@ -305,7 +304,7 @@ cont(icon, text) {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Icon(icon, size: 40, color: Colors.white),
+              icon,
               Text(
                 text,
                 style: commonstyle(
