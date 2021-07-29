@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:techkaroapp/config/fontS.dart';
 import 'package:techkaroapp/config/pallete.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -55,14 +56,14 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                         text: TextSpan(
                       text: "Welcome to",
                       style: TextStyle(
-                          fontSize: 25,
+                          fontSize: vl,
                           letterSpacing: 2,
                           color: Colors.yellow[700]),
                       children: [
                         TextSpan(
                           text: "TechKaro,",
                           style: TextStyle(
-                            fontSize: 25,
+                            fontSize: vl,
                             fontWeight: FontWeight.bold,
                             color: Colors.yellow[700],
                           ),
@@ -75,6 +76,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                     Text(
                       "Register/Login to Continue",
                       style: TextStyle(
+                        fontSize: m,
                         letterSpacing: 2,
                         color: Colors.white,
                       ),
@@ -153,7 +155,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
     return Column(
       children: <Widget>[
         Padding(
-            padding: EdgeInsets.symmetric(vertical: 20),
+            padding: EdgeInsets.symmetric(vertical: 15),
             child: Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: TextField(
@@ -163,16 +165,16 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                   prefixIcon: Icon(Icons.email),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Pallete.textColor1),
-                    borderRadius: BorderRadius.all(Radius.circular(35.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Pallete.textColor1),
-                    borderRadius: BorderRadius.all(Radius.circular(35.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
                   ),
                   contentPadding: EdgeInsets.all(10),
                   hintText: "Email ID",
                   hintStyle: TextStyle(
-                    fontSize: 14,
+                    fontSize: vs,
                     color: Pallete.textColor1,
                   ),
                 ),
@@ -182,7 +184,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
               ),
             )),
         Padding(
-            padding: EdgeInsets.symmetric(vertical: 20),
+            padding: EdgeInsets.symmetric(vertical: 10),
             child: Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: TextField(
@@ -192,16 +194,16 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                   prefixIcon: Icon(Icons.lock),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Pallete.textColor1),
-                    borderRadius: BorderRadius.all(Radius.circular(35.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Pallete.textColor1),
-                    borderRadius: BorderRadius.all(Radius.circular(35.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
                   ),
                   contentPadding: EdgeInsets.all(10),
                   hintText: "Password",
                   hintStyle: TextStyle(
-                    fontSize: 14,
+                    fontSize: vs,
                     color: Pallete.textColor1,
                   ),
                 ),
@@ -210,36 +212,48 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                 },
               ),
             )),
-        MaterialButton(
-            child: Text("Login", style: TextStyle(color: Colors.black)),
-            onPressed: () async {
-              await firebaseAuth
-                  .signInWithEmailAndPassword(email: email, password: password)
-                  .then((result) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => Home()),
-                );
-              }).catchError((err) {
-                print(err.message);
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text("Error"),
-                        content: Text(err.message),
-                        actions: [
-                          TextButton(
-                            child: Text("Ok"),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          )
-                        ],
-                      );
-                    });
-              });
-            }),
+        InkWell(
+          child: Container(
+            child: Center(
+                child: Text("LOGIN",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold))),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(18),
+              color: Color(0xFF3b5999).withOpacity(.85),
+            ),
+            height: 40,
+            width: 180,
+          ),
+          onTap: () async {
+            await firebaseAuth
+                .signInWithEmailAndPassword(email: email, password: password)
+                .then((result) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => Home()),
+              );
+            }).catchError((err) {
+              print(err.message);
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Error"),
+                      content: Text(err.message),
+                      actions: [
+                        TextButton(
+                          child: Text("Ok"),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        )
+                      ],
+                    );
+                  });
+            });
+          },
+        ),
       ],
     );
   }
@@ -268,17 +282,12 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
         Padding(
           padding: EdgeInsets.symmetric(vertical: 10),
           child: builtTextField(
+              Icon(Icons.home), "Select Apartment", false, false, "_al2"),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          child: builtTextField(
               Icon(Icons.home), "Flat Number", false, false, "_flat"),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          child: builtTextField(
-              Icon(Icons.home), "Address Line 2", false, false, "_al2"),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          child: builtTextField(
-              Icon(Icons.home), "Address Line 3", false, false, "_al3"),
         ),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 10),
@@ -290,9 +299,20 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
           child: builtTextField(
               Icon(Icons.lock), "Password", true, false, "_password"),
         ),
-        MaterialButton(
-          child: Text("Create Account", style: TextStyle(color: Colors.black)),
-          onPressed: () async {
+        InkWell(
+          child: Container(
+            child: Center(
+                child: Text("CREATE ACCOUNT",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold))),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(18),
+              color: Color(0xFF3b5999).withOpacity(.85),
+            ),
+            height: 40,
+            width: 180,
+          ),
+          onTap: () async {
             await firebaseAuth
                 .createUserWithEmailAndPassword(
                     email: _email, password: _password)
@@ -302,10 +322,13 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                   "name": _name,
                   "mobile": _mob,
                   "email": _email,
-                  "society": _al2,
-                  "locality": _al3,
+                  // "society": _al2,
+                  // "locality": _al3,
                   "flat": _flat,
                   "isout": false,
+                  "role": "member",
+                  // "fam": {name: "$_name", mob: "$_mob"},
+                  "fam": ["$_name, $_mob"],
                 });
                 Navigator.pushReplacement(
                     context,
@@ -324,7 +347,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                       //     Text("Invalid content, try again!"),
                       actions: [
                         TextButton(
-                          child: Text("Ok"),
+                          child: Text("okay"),
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
@@ -356,16 +379,16 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
           prefixIcon: icon,
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Pallete.textColor1),
-            borderRadius: BorderRadius.all(Radius.circular(35.0)),
+            borderRadius: BorderRadius.all(Radius.circular(15.0)),
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Pallete.textColor1),
-            borderRadius: BorderRadius.all(Radius.circular(35.0)),
+            borderRadius: BorderRadius.all(Radius.circular(15.0)),
           ),
           contentPadding: EdgeInsets.all(10),
           hintText: hintText,
           hintStyle: TextStyle(
-            fontSize: 14,
+            fontSize: vs,
             color: Pallete.textColor1,
           ),
         ),
@@ -374,6 +397,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
             _email = text;
           } else if (change == "_password") {
             _password = text;
+          } else if (change == "_name") {
+            _name = text;
           } else if (change == "_al2") {
             _al2 = text;
           } else if (change == "_al3") {

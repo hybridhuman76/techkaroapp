@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:techkaroapp/config/fontS.dart';
 import 'package:techkaroapp/main.dart';
+import 'package:techkaroapp/screen/members.dart';
+import 'package:techkaroapp/screen/notifications.dart';
 import 'home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class Account extends StatefulWidget {
   @override
   _AccountState createState() => _AccountState();
 }
 
-String flat = "", name = "", line2 = "", line3 = "";
-bool islight = false;
+String flat = "", name = "", newflat = "";
+bool islight, isSmall;
 
 class _AccountState extends State<Account> {
   void toggleMode(bool value) {
@@ -24,30 +28,30 @@ class _AccountState extends State<Account> {
     }
   }
 
-  // void x() {
-  //   FirebaseFirestore.instance
-  //       .collection('users')
-  //       .doc(FirebaseAuth.instance.currentUser?.uid)
-  //       .get()
-  //       .then((value) {
-  //     {
-  //       if (value.exists) {
-  //         setState(() {
-  //           line2 = "${(value.data()["al2"])}";
-  //           line3 = "${(value.data()["al3"])}";
-  //           flat = "${(value.data()["flat"])}";
-  //         });
-  //         // print('Document data: ${(value.data()["name"])}');
-  //       } else {
-  //         print('Document does not exist on the database');
-  //       }
-  //     }
-  //   });
-  // }
+  void toggleFont(bool value2) {
+    if (isSmall == true) {
+      // font comes to normal
+      setState(() {
+        isSmall = false;
+        vs = 12.0;
+        m = 15.0;
+        l = 20.0;
+        vl = 25.0;
+      });
+    } else {
+      setState(() {
+        isSmall = true;
+        vs = 15.0;
+        m = 20.0;
+        l = 25.0;
+        vl = 30.0;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    // x();
+    double w = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SingleChildScrollView(
           child: Container(
@@ -76,70 +80,51 @@ class _AccountState extends State<Account> {
                 ],
               ),
             ),
-            SingleChildScrollView(
-              child: Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                    child: Container(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+            InkWell(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Members()));
+              },
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Row(
                         children: <Widget>[
-                          Image.asset(
-                            "assets/fam.png",
-                            height: 70,
+                          Padding(
+                            child: Image.asset(
+                              "assets/fam.png",
+                              height: 80,
+                              width: 80,
+                            ),
+                            padding: EdgeInsets.all(20),
                           ),
                           Text(
-                            "Edit Members",
-                            style: commonstyle(20.0, FontWeight.normal),
-                          )
+                            "${names.length}",
+                            style: commonstyle(2 * vl, FontWeight.normal),
+                          ),
                         ],
                       ),
-                      height: 130,
-                      width: 150,
-                      // width: double.infinity,
-                      decoration: BoxDecoration(
-                        gradient: lineardesign(
-                            Alignment.centerRight, Alignment.centerLeft),
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
+                      Padding(
+                        padding: EdgeInsets.only(right: 20),
+                        child: Text(
+                          "View/Edit\nMembers",
+                          style: commonstyle(l, FontWeight.normal),
+                        ),
+                      )
+                    ],
                   ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                    child: Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          Image.asset("assets/fam.png"),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                "5",
-                                style: commonstyle(40.0, FontWeight.normal),
-                              ),
-                              Text(
-                                "View",
-                                style: commonstyle(20.0, FontWeight.normal),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      height: 130,
-                      width: 170,
-                      // width: double.infinity,
-                      decoration: BoxDecoration(
-                        gradient: lineardesign(
-                            Alignment.centerRight, Alignment.centerLeft),
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
+                  width: double.infinity,
+                  height: 130,
+                  decoration: BoxDecoration(
+                    gradient: lineardesign(
+                        Alignment.centerRight, Alignment.centerLeft),
+                    borderRadius: BorderRadius.circular(20.0),
                   ),
-                ],
+                ),
               ),
-              scrollDirection: Axis.horizontal,
             ),
             Padding(
               padding: EdgeInsets.all(10),
@@ -160,22 +145,65 @@ class _AccountState extends State<Account> {
                       children: <Widget>[
                         Text(
                           "$flat",
-                          style: commonstyle(30.0, FontWeight.bold),
+                          style: commonstyle(2 * m, FontWeight.bold),
                         ),
                         Text(
-                          "$line2",
-                          style: commonstyle(18.0, FontWeight.normal),
+                          "Apartment name",
+                          style: commonstyle(2 * m, FontWeight.normal),
                         ),
                         Row(
                           children: <Widget>[
                             Text(
-                              "$line3",
-                              style: commonstyle(18.0, FontWeight.normal),
+                              "locality",
+                              style: commonstyle(l - 2, FontWeight.normal),
                             ),
                             Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 20),
                                 child: MaterialButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text("Edit Address"),
+                                            content: Container(
+                                              height: 150,
+                                              child: Column(
+                                                children: <Widget>[
+                                                  TextField(
+                                                    onChanged: (value) {
+                                                      newflat = value;
+                                                    },
+                                                    decoration: InputDecoration(
+                                                        hintText:
+                                                            "Enter New Flat Number"),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+
+                                            // title: Text("Error"),
+                                            // content: Text(err.message),
+                                            // content:
+                                            //     Text("Invalid content, try again!"),
+                                            actions: [
+                                              TextButton(
+                                                child: Text("Change"),
+                                                onPressed: () {
+                                                  FirebaseFirestore.instance
+                                                      .collection('users')
+                                                      .doc(FirebaseAuth.instance
+                                                          .currentUser.uid)
+                                                      .update({
+                                                    'flat': "$newflat"
+                                                  }).then((_) => Navigator.pop(
+                                                          context));
+                                                },
+                                              )
+                                            ],
+                                          );
+                                        });
+                                  },
                                   child: Text("Edit"),
                                   color: Colors.red[800],
                                   shape: RoundedRectangleBorder(
@@ -189,7 +217,7 @@ class _AccountState extends State<Account> {
                   ],
                 ),
                 width: double.infinity,
-                height: 130,
+                height: (vs + 1) * 10,
                 decoration: BoxDecoration(
                   gradient:
                       lineardesign(Alignment.centerRight, Alignment.centerLeft),
@@ -204,10 +232,82 @@ class _AccountState extends State<Account> {
                   primary: true,
                   crossAxisCount: 2,
                   children: <Widget>[
-                    cont(
-                        Image.asset("assets/logo.png", height: 40), "About Us"),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => WebView(
+                                      initialUrl: 'https://techkaro.in',
+                                      javascriptMode:
+                                          JavascriptMode.unrestricted,
+                                    )));
+                      },
+                      child: cont(Image.asset("assets/logo.png", height: 40),
+                          "About Us"),
+                    ),
                     cont(Image.asset("assets/bill.png", height: 40), "Bills"),
                   ]),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.only(left: 10),
+                    child: InkWell(
+                      child: Container(
+                        child: Center(
+                          child: Text("Notifications",
+                              style: TextStyle(
+                                  fontSize: vs + 3,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                        height: 45,
+                        width: (w / 2) - 20,
+                        decoration: BoxDecoration(
+                          gradient: lineardesign(
+                              Alignment.centerRight, Alignment.centerLeft),
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Notifications()));
+                      },
+                    )),
+                Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: InkWell(
+                      onTap: () {
+                        FirebaseAuth auth = FirebaseAuth.instance;
+                        auth.signOut().then((res) {
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(builder: (context) => MyApp()),
+                              (Route<dynamic> route) => false);
+                        });
+                      },
+                      child: Container(
+                        child: Center(
+                          child: Text("logOut",
+                              style: TextStyle(
+                                  fontSize: vs + 3,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                        height: 45,
+                        width: (w / 2) - 20,
+                        decoration: BoxDecoration(
+                          gradient: lineardesign(
+                              Alignment.centerRight, Alignment.centerLeft),
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                    ))
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -216,89 +316,38 @@ class _AccountState extends State<Account> {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.only(top: 20),
-                      child: Container(
-                        child: Switch(value: islight, onChanged: toggleMode),
-                        height: 45,
-                        width: 80,
-                      ),
+                      child: Transform.scale(
+                          scale: 2,
+                          child: Switch(
+                            value: islight,
+                            onChanged: toggleMode,
+                            inactiveThumbColor: Colors.blueAccent,
+                          )),
                     ),
                     Text("switch mode"),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 0),
-                      child: Container(
-                        child: Switch(value: islight, onChanged: toggleMode),
-                        height: 45,
-                        width: 80,
-                      ),
-                    ),
-                    Text("change font size")
                   ],
                 ),
                 Column(
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20),
-                      child: Container(
-                        child: Center(
-                          child: Text("Notifications",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold)),
-                        ),
-                        height: 45,
-                        width: 160,
-                        decoration: BoxDecoration(
-                          gradient: lineardesign(
-                              Alignment.centerRight, Alignment.centerLeft),
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
+                      padding: EdgeInsets.only(top: 20),
+                      child: Transform.scale(
+                          scale: 2,
+                          child: Switch(
+                            activeColor: Colors.green,
+                            value: isSmall,
+                            onChanged: toggleFont,
+                            inactiveThumbColor: Colors.blueAccent,
+                          )),
                     ),
-                    Padding(
-                        padding: EdgeInsets.only(bottom: 10),
-                        child: InkWell(
-                          onTap: () {
-                            FirebaseAuth auth = FirebaseAuth.instance;
-                            auth.signOut().then((res) {
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => MyApp()),
-                                  (Route<dynamic> route) => false);
-                            });
-                          },
-                          child: Container(
-                            child: Center(
-                              child: Text("logOut",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold)),
-                            ),
-                            height: 45,
-                            width: 160,
-                            decoration: BoxDecoration(
-                              gradient: lineardesign(
-                                  Alignment.centerRight, Alignment.centerLeft),
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                          ),
-                        ))
+                    Text("change Font Size"),
                   ],
-                )
+                ),
               ],
-            )
+            ),
           ],
         ),
       )),
     );
   }
 }
-
-
-// Row(
-//                   children: <Widget>[
-//                     Text("light"),
-//                     Switch(value: islight, onChanged: toggleMode),
-//                     Text("dark")
-//                   ],
-//                 ),

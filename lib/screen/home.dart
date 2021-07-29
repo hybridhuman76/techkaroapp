@@ -1,15 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:techkaroapp/config/fontS.dart';
 import 'package:techkaroapp/screen/account.dart';
 import 'package:techkaroapp/screen/login_signup.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:techkaroapp/screen/services.dart';
+import 'members.dart';
 
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
 
-String flat = "", name = "", line2 = "", line3 = "";
+String flat = "", name = "";
 
 class _HomeState extends State<Home> {
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -23,6 +26,10 @@ class _HomeState extends State<Home> {
         isSwitched = true;
         textValue = 'status set to outdoor';
       });
+      firestoreInstance
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser.uid)
+          .update({'isout': true});
     } else {
       setState(() {
         isSwitched = false;
@@ -31,9 +38,7 @@ class _HomeState extends State<Home> {
       firestoreInstance
           .collection("users")
           .doc(FirebaseAuth.instance.currentUser.uid)
-          .set({
-        "isout": false,
-      });
+          .update({'isout': false});
     }
   }
 
@@ -46,10 +51,11 @@ class _HomeState extends State<Home> {
       {
         if (value.exists) {
           setState(() {
-            line2 = "${(value.data()["society"])}";
-            line3 = "${(value.data()["locality"])}";
+            // line2 = "${(value.data()["society"])}";
+            // line3 = "${(value.data()["locality"])}";
             flat = "${(value.data()["flat"])}";
             name = "${(value.data()["name"])}";
+            names = List.from((value.data()["fam"]));
           });
           // print('Document data: ${(value.data()["name"])}');
         } else {
@@ -76,8 +82,8 @@ class _HomeState extends State<Home> {
                     padding: EdgeInsets.all(20),
                     child: Text(
                       "Hey, $name",
-                      style:
-                          TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
+                      style: TextStyle(
+                          fontSize: l + 5, fontWeight: FontWeight.w600),
                     ),
                   ),
                   InkWell(
@@ -104,7 +110,7 @@ class _HomeState extends State<Home> {
               children: <Widget>[
                 Text(
                   "Indoor",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: l, fontWeight: FontWeight.bold),
                 ),
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Transform.scale(
@@ -120,7 +126,7 @@ class _HomeState extends State<Home> {
                 ]),
                 Text(
                   "Outdoor",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: l, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -143,15 +149,15 @@ class _HomeState extends State<Home> {
                       children: <Widget>[
                         Text(
                           "$flat",
-                          style: commonstyle(30.0, FontWeight.bold),
+                          style: commonstyle(2 * m, FontWeight.bold),
                         ),
                         Text(
-                          "$line2",
-                          style: commonstyle(18.0, FontWeight.normal),
+                          "Apartment Name",
+                          style: commonstyle(l - 2, FontWeight.normal),
                         ),
                         Text(
-                          "$line3",
-                          style: commonstyle(18.0, FontWeight.normal),
+                          "locality",
+                          style: commonstyle(l - 2, FontWeight.normal),
                         ),
                       ],
                     )
@@ -178,14 +184,14 @@ class _HomeState extends State<Home> {
                         children: [
                           Text(
                             "  Bill overdue!",
-                            style: commonstyle(20.0, FontWeight.bold),
+                            style: commonstyle(l, FontWeight.bold),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
                               Text(
-                                "₹ 6969",
-                                style: commonstyle(30.0, FontWeight.bold),
+                                "₹ 6920",
+                                style: commonstyle(2 * m, FontWeight.bold),
                               ),
                               MaterialButton(
                                 onPressed: () {},
@@ -219,14 +225,14 @@ class _HomeState extends State<Home> {
                         children: [
                           Text(
                             "  Complaint",
-                            style: commonstyle(20.0, FontWeight.bold),
+                            style: commonstyle(l, FontWeight.bold),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
                               Text(
-                                "# 69",
-                                style: commonstyle(30.0, FontWeight.bold),
+                                "# 50",
+                                style: commonstyle(2 * m, FontWeight.bold),
                               ),
                               MaterialButton(
                                 onPressed: () {},
@@ -262,8 +268,16 @@ class _HomeState extends State<Home> {
                   crossAxisCount: 2,
                   children: <Widget>[
                     cont(Image.asset("assets/chat.png", height: 40), "Message"),
-                    cont(
-                        Image.asset("assets/cart.png", height: 40), "Services"),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Services()));
+                      },
+                      child: cont(Image.asset("assets/cart.png", height: 40),
+                          "Services"),
+                    ),
                     cont(Image.asset("assets/bill.png", height: 40), "Billing"),
                     cont(Image.asset("assets/briefcase.png", height: 40),
                         "Visitors"),
@@ -281,8 +295,8 @@ class _HomeState extends State<Home> {
                 ),
                 child: Center(
                     child: Text(
-                  "Helpdesk & Support",
-                  style: commonstyle(16.0, FontWeight.bold),
+                  "Call at Society Gate",
+                  style: commonstyle(m + 1, FontWeight.bold),
                 )),
               ),
             )
@@ -308,7 +322,7 @@ cont(icon, text) {
               Text(
                 text,
                 style: commonstyle(
-                  20.0,
+                  l,
                   FontWeight.bold,
                 ),
               )
