@@ -18,7 +18,8 @@ String _email = "",
     _name = "",
     _mob = "",
     email = "",
-    password = "";
+    password = "",
+    soc = "demo";
 
 class _LoginSignupScreenState extends State<LoginSignupScreen> {
   bool isMale = true;
@@ -282,7 +283,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
         Padding(
           padding: EdgeInsets.symmetric(vertical: 10),
           child: builtTextField(
-              Icon(Icons.home), "Select Apartment", false, false, "_al2"),
+              Icon(Icons.home), "Select Apartment", false, false, "apt"),
         ),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 10),
@@ -327,6 +328,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                   "flat": _flat,
                   "isout": false,
                   "role": "member",
+                  "bill": 0,
+                  "society": soc,
                   // "fam": {name: "$_name", mob: "$_mob"},
                   "fam": ["$_name, $_mob"],
                 });
@@ -407,6 +410,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
             _flat = text;
           } else if (change == "_mob") {
             _mob = text;
+          } else if (change == "apt") {
+            soc = text;
           }
         },
       ),

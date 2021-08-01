@@ -2,17 +2,21 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:techkaroapp/config/fontS.dart';
 import 'package:techkaroapp/screen/account.dart';
+import 'package:techkaroapp/screen/chat.dart';
 import 'package:techkaroapp/screen/login_signup.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techkaroapp/screen/services.dart';
 import 'members.dart';
+import 'chat.dart';
 
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
 
-String flat = "", name = "";
+String flat = "", name = "", role, society;
+List<String> line1;
+int billamount;
 
 class _HomeState extends State<Home> {
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -51,11 +55,34 @@ class _HomeState extends State<Home> {
       {
         if (value.exists) {
           setState(() {
-            // line2 = "${(value.data()["society"])}";
-            // line3 = "${(value.data()["locality"])}";
+            isSwitched = (value.data()["isout"]);
             flat = "${(value.data()["flat"])}";
             name = "${(value.data()["name"])}";
             names = List.from((value.data()["fam"]));
+            society = "${(value.data()["society"])}";
+            role = "${(value.data()["role"])}";
+            billamount = (value.data()["bill"]);
+          });
+          // print('Document data: ${(value.data()["name"])}');
+        } else {
+          print('Document does not exist on the database');
+        }
+      }
+    });
+  }
+
+  void y() {
+    FirebaseFirestore.instance
+        .collection('apartments')
+        .doc('list')
+        .get()
+        .then((value) {
+      {
+        if (value.exists) {
+          setState(() {
+            // isSwitched = (value.data()["isout"]);
+            // flat = "${(value.data()["flat"])}";
+            line1 = List.from((value.data()[society]));
           });
           // print('Document data: ${(value.data()["name"])}');
         } else {
@@ -68,6 +95,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     x();
+    y();
     return Scaffold(
       body: SingleChildScrollView(
           child: Container(
@@ -152,11 +180,11 @@ class _HomeState extends State<Home> {
                           style: commonstyle(2 * m, FontWeight.bold),
                         ),
                         Text(
-                          "Apartment Name",
+                          line1[0],
                           style: commonstyle(l - 2, FontWeight.normal),
                         ),
                         Text(
-                          "locality",
+                          line1[1],
                           style: commonstyle(l - 2, FontWeight.normal),
                         ),
                       ],
@@ -190,7 +218,7 @@ class _HomeState extends State<Home> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
                               Text(
-                                "₹ 6920",
+                                "₹ $billamount",
                                 style: commonstyle(2 * m, FontWeight.bold),
                               ),
                               MaterialButton(
@@ -267,7 +295,16 @@ class _HomeState extends State<Home> {
                   primary: true,
                   crossAxisCount: 2,
                   children: <Widget>[
-                    cont(Image.asset("assets/chat.png", height: 40), "Message"),
+                    InkWell(
+                      child: cont(Image.asset("assets/chat.png", height: 40),
+                          "Message"),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ChatCheck()));
+                      },
+                    ),
                     InkWell(
                       onTap: () {
                         Navigator.push(

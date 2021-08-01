@@ -14,8 +14,8 @@ class Account extends StatefulWidget {
   _AccountState createState() => _AccountState();
 }
 
-String flat = "", name = "", newflat = "";
-bool islight, isSmall;
+String name = "", newflat = "";
+bool islight, isSmall = false;
 
 class _AccountState extends State<Account> {
   void toggleMode(bool value) {
@@ -148,14 +148,14 @@ class _AccountState extends State<Account> {
                           style: commonstyle(2 * m, FontWeight.bold),
                         ),
                         Text(
-                          "Apartment name",
-                          style: commonstyle(2 * m, FontWeight.normal),
+                          line1[0],
+                          style: commonstyle(l, FontWeight.normal),
                         ),
                         Row(
                           children: <Widget>[
                             Text(
-                              "locality",
-                              style: commonstyle(l - 2, FontWeight.normal),
+                              line1[1],
+                              style: commonstyle(l - 5, FontWeight.normal),
                             ),
                             Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 20),
