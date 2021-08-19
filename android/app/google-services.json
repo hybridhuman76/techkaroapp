@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:810605934692:android:a20e1ad8d8b5dc9ed6c771",
+        "mobilesdk_app_id": "1:810605934692:android:a55fdd2431a7db75d6c771",
         "android_client_info": {
-          "package_name": "com.example.techkaroapp"
+          "package_name": "com.techkaroapp.user"
         }
       },
       "oauth_client": [
@@ -29,6 +29,13 @@
             {
               "client_id": "810605934692-m6p5iblo0fpddk9phsihctous1frqofe.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "810605934692-13329gqbn5cl7ecccuam5g7lgt1rb7vv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.techkaroapp"
+              }
             }
           ]
         }

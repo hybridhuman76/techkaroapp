@@ -7,7 +7,7 @@ class Notifications extends StatefulWidget {
   _NotificationsState createState() => _NotificationsState();
 }
 
-List<String> notiflist = ["notifs 1", "notifs2"];
+List<String> notiflist = ["notification 1", "notification 2"];
 
 class _NotificationsState extends State<Notifications> {
   @override
@@ -21,17 +21,19 @@ class _NotificationsState extends State<Notifications> {
             return Padding(
                 padding: EdgeInsets.all(10),
                 child: Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                    gradient: lineardesign(
-                        Alignment.centerRight, Alignment.centerLeft),
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  child: Text(
-                    notiflist[index],
-                    style: commonstyle(l, FontWeight.normal),
-                  ),
-                ));
+                    height: 50,
+                    decoration: BoxDecoration(
+                      gradient: lineardesign(
+                          Alignment.centerRight, Alignment.centerLeft),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    child: Padding(
+                      child: Text(
+                        notiflist[index],
+                        style: commonstyle(l, FontWeight.normal),
+                      ),
+                      padding: EdgeInsets.all(10),
+                    )));
             // return ListTile(
             //     leading: Icon(Icons.list),
             //     trailing: IconButton(icon: Icon(Icons.remove)),

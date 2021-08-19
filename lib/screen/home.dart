@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:techkaroapp/config/fontS.dart';
 import 'package:techkaroapp/screen/account.dart';
 import 'package:techkaroapp/screen/chat.dart';
-import 'package:techkaroapp/screen/login_signup.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:techkaroapp/screen/complaints.dart';
+import 'package:techkaroapp/screen/notifications.dart';
 import 'package:techkaroapp/screen/services.dart';
+import 'package:techkaroapp/screen/visitors.dart';
 import 'members.dart';
 import 'chat.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -17,6 +20,7 @@ class Home extends StatefulWidget {
 String flat = "", name = "", role, society;
 List<String> line1;
 int billamount;
+int complaint = 0;
 
 class _HomeState extends State<Home> {
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -104,34 +108,69 @@ class _HomeState extends State<Home> {
             Padding(
               padding: EdgeInsets.fromLTRB(0, 30, 10, 20),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Text(
-                      "Hey, $name",
-                      style: TextStyle(
-                          fontSize: l + 5, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  InkWell(
-                    child: Container(
-                      child: Center(
-                          child: Image.asset("assets/acc.png", height: 25)),
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                          gradient: lineardesign(
-                              Alignment.bottomLeft, Alignment.topRight),
-                          borderRadius: BorderRadius.circular(40)),
-                    ),
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Account()));
-                    },
+                  Row(
+                    children: <Widget>[
+                      InkWell(
+                        child: Container(
+                          child: Center(
+                              child:
+                                  Image.asset("assets/bell.png", height: 25)),
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                              gradient: lineardesign(
+                                  Alignment.bottomLeft, Alignment.topRight),
+                              borderRadius: BorderRadius.circular(40)),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Notifications()));
+                        },
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 5,
+                        ),
+                        child: InkWell(
+                          child: Container(
+                            child: Center(
+                                child:
+                                    Image.asset("assets/acc.png", height: 25)),
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                                gradient: lineardesign(
+                                    Alignment.bottomLeft, Alignment.topRight),
+                                borderRadius: BorderRadius.circular(40)),
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Account()));
+                          },
+                        ),
+                      ),
+                    ],
                   )
                 ],
               ),
+            ),
+            Row(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.fromLTRB(20, 5, 10, 10),
+                  child: Text(
+                    "Hey, $name",
+                    style:
+                        TextStyle(fontSize: l + 5, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -222,7 +261,45 @@ class _HomeState extends State<Home> {
                                 style: commonstyle(2 * m, FontWeight.bold),
                               ),
                               MaterialButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text("Pay Bill"),
+                                          content: Container(
+                                            height: 80,
+                                            child: Row(
+                                              children: <Widget>[
+                                                Text("Call Admin to pay bill?")
+                                              ],
+                                            ),
+                                          ),
+
+                                          // title: Text("Error"),
+                                          // content: Text(err.message),
+                                          // content:
+                                          //     Text("Invalid content, try again!"),
+                                          actions: [
+                                            TextButton(
+                                              child: Text("Cancel"),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            TextButton(
+                                                onPressed: () async {
+                                                  const number =
+                                                      '08592119XXXX'; //set the number here
+
+                                                  await FlutterPhoneDirectCaller
+                                                      .callNumber(number);
+                                                },
+                                                child: Text("Call"))
+                                          ],
+                                        );
+                                      });
+                                },
                                 child: Text("Pay"),
                                 color: Colors.red[800],
                                 shape: RoundedRectangleBorder(
@@ -259,11 +336,16 @@ class _HomeState extends State<Home> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
                               Text(
-                                "# 50",
+                                "# $complaint",
                                 style: commonstyle(2 * m, FontWeight.bold),
                               ),
                               MaterialButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Complaint()));
+                                },
                                 child: Text("Details"),
                                 color: Colors.red[800],
                                 shape: RoundedRectangleBorder(
@@ -299,10 +381,8 @@ class _HomeState extends State<Home> {
                       child: cont(Image.asset("assets/chat.png", height: 40),
                           "Message"),
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ChatCheck()));
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Chat()));
                       },
                     ),
                     InkWell(
@@ -315,26 +395,84 @@ class _HomeState extends State<Home> {
                       child: cont(Image.asset("assets/cart.png", height: 40),
                           "Services"),
                     ),
-                    cont(Image.asset("assets/bill.png", height: 40), "Billing"),
-                    cont(Image.asset("assets/briefcase.png", height: 40),
-                        "Visitors"),
+                    InkWell(
+                      child: cont(Image.asset("assets/bill.png", height: 40),
+                          "Billing"),
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text("Pay Bill"),
+                                content: Container(
+                                  height: 80,
+                                  child: Row(
+                                    children: <Widget>[
+                                      Text("Call Admin to pay bill?")
+                                    ],
+                                  ),
+                                ),
+
+                                // title: Text("Error"),
+                                // content: Text(err.message),
+                                // content:
+                                //     Text("Invalid content, try again!"),
+                                actions: [
+                                  TextButton(
+                                    child: Text("Cancel"),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  TextButton(
+                                      onPressed: () async {
+                                        const number =
+                                            '08592119XXXX'; //set the number here
+
+                                        await FlutterPhoneDirectCaller
+                                            .callNumber(number);
+                                      },
+                                      child: Text("Call"))
+                                ],
+                              );
+                            });
+                      },
+                    ),
+                    InkWell(
+                      child: cont(
+                          Image.asset("assets/briefcase.png", height: 40),
+                          "Visitors"),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Visitors()));
+                      },
+                    )
                   ]),
             ),
             Padding(
               padding: EdgeInsets.all(10),
-              child: Container(
-                height: 50,
-                // width: 300,
-                decoration: BoxDecoration(
-                  gradient:
-                      lineardesign(Alignment.centerRight, Alignment.centerLeft),
-                  borderRadius: BorderRadius.circular(20.0),
+              child: InkWell(
+                onTap: () async {
+                  const number = '08592119XXXX'; //set the number here
+
+                  await FlutterPhoneDirectCaller.callNumber(number);
+                },
+                child: Container(
+                  height: 50,
+                  // width: 300,
+                  decoration: BoxDecoration(
+                    gradient: lineardesign(
+                        Alignment.centerRight, Alignment.centerLeft),
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  child: Center(
+                      child: Text(
+                    "Call at Society Gate",
+                    style: commonstyle(m + 1, FontWeight.bold),
+                  )),
                 ),
-                child: Center(
-                    child: Text(
-                  "Call at Society Gate",
-                  style: commonstyle(m + 1, FontWeight.bold),
-                )),
               ),
             )
           ],

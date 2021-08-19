@@ -12,8 +12,6 @@ class LoginSignupScreen extends StatefulWidget {
 
 String _email = "",
     _password = "",
-    _al2 = "",
-    _al3 = "",
     _flat = "",
     _name = "",
     _mob = "",
@@ -402,10 +400,6 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
             _password = text;
           } else if (change == "_name") {
             _name = text;
-          } else if (change == "_al2") {
-            _al2 = text;
-          } else if (change == "_al3") {
-            _al3 = text;
           } else if (change == "_flat") {
             _flat = text;
           } else if (change == "_mob") {

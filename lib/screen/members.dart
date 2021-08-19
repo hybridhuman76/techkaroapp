@@ -41,10 +41,15 @@ class _MembersState extends State<Members> {
                         ),
                       ),
                       IconButton(
-                          onPressed: () {
-                            setState(() {
-                              names.remove(names[index]);
-                            });
+                          onPressed: () async {
+                            await FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(FirebaseAuth.instance.currentUser.uid)
+                                .update({
+                              'fam': FieldValue.arrayRemove([names[index]])
+                            }).then((_) => Navigator.pop(context));
+
+                            Navigator.of(context).pop();
                           },
                           icon: Icon(
                             Icons.remove,
@@ -104,17 +109,17 @@ class _MembersState extends State<Members> {
                             TextButton(
                               child: Text("Add"),
                               onPressed: () async {
-                                var num = names.length;
                                 await FirebaseFirestore.instance
                                     .collection('users')
                                     .doc(FirebaseAuth.instance.currentUser.uid)
                                     .update({
-                                  'fam[$num]': "$addName, $fammob"
+                                  'fam': FieldValue.arrayUnion(
+                                      ["$addName, $fammob"])
                                 }).then((_) => Navigator.pop(context));
-                                setState(() {
-                                  names.add(addName);
-                                });
-                                Navigator.of(context).pop();
+                                // setState(() {
+                                //   names.add(addName);
+                                // });
+                                // Navigator.of(context).pop();
                               },
                             )
                           ],

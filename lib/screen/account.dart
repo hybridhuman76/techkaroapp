@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:techkaroapp/config/fontS.dart';
 import 'package:techkaroapp/main.dart';
 import 'package:techkaroapp/screen/members.dart';
-import 'package:techkaroapp/screen/notifications.dart';
+import 'package:techkaroapp/screen/policy.dart';
+import 'package:techkaroapp/screen/utility.dart';
 import 'home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -246,7 +247,14 @@ class _AccountState extends State<Account> {
                       child: cont(Image.asset("assets/logo.png", height: 40),
                           "About Us"),
                     ),
-                    cont(Image.asset("assets/bill.png", height: 40), "Bills"),
+                    InkWell(
+                      child: cont(Image.asset("assets/bill.png", height: 40),
+                          "Utility Bills"),
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Utility()));
+                      },
+                    )
                   ]),
             ),
             Row(
@@ -257,7 +265,7 @@ class _AccountState extends State<Account> {
                     child: InkWell(
                       child: Container(
                         child: Center(
-                          child: Text("Notifications",
+                          child: Text("Privacy Policy",
                               style: TextStyle(
                                   fontSize: vs + 3,
                                   color: Colors.white,
@@ -272,10 +280,8 @@ class _AccountState extends State<Account> {
                         ),
                       ),
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Notifications()));
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Policy()));
                       },
                     )),
                 Padding(

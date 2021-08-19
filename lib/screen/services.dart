@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:techkaroapp/config/fontS.dart';
-import 'package:techkaroapp/screen/account.dart';
 import 'package:techkaroapp/screen/home.dart';
 
 class Services extends StatefulWidget {
@@ -8,11 +7,12 @@ class Services extends StatefulWidget {
   _ServicesState createState() => _ServicesState();
 }
 
+List<bool> serviceslist = [];
+
 class _ServicesState extends State<Services> {
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
-    double h = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Container(
           child: SingleChildScrollView(
@@ -48,6 +48,26 @@ class _ServicesState extends State<Services> {
                   ),
                 ],
               ),
+            ),
+            Container(
+              width: w - 40,
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text("In progress",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold)),
+                  ],
+                ),
+              ),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  gradient:
+                      lineardesign(Alignment.topLeft, Alignment.bottomRight)),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
