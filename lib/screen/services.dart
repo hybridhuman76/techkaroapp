@@ -1,18 +1,65 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:techkaroapp/config/fontS.dart';
 import 'package:techkaroapp/screen/home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Services extends StatefulWidget {
   @override
   _ServicesState createState() => _ServicesState();
 }
 
-List<bool> serviceslist = [];
+List<bool> serviceslist = [
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false
+];
+final List<String> matchlist = [
+  "grocery",
+  "ac",
+  "painter",
+  "ro",
+  "water",
+  "pest",
+  "plumber",
+  "electrician"
+];
 
 class _ServicesState extends State<Services> {
   @override
   Widget build(BuildContext context) {
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .get()
+        .then((value) => {
+              if (value.exists)
+                {
+                  setState(() {
+                    serviceslist = List.from(value.data()['services']);
+                  })
+                }
+            });
+    String txt = "";
+    for (int i = 1; i < 8; i++) {
+      if (serviceslist[i] == true) {
+        setState(() {
+          txt = txt + matchlist[i] + "\n";
+        });
+      }
+      if (txt == "") {
+        setState(() {
+          txt = "no pending requests";
+        });
+      }
+    }
     double w = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: Container(
           child: SingleChildScrollView(
@@ -61,6 +108,12 @@ class _ServicesState extends State<Services> {
                             color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.bold)),
+                    Text(
+                      "",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -72,29 +125,317 @@ class _ServicesState extends State<Services> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                servicescont(w, Icons.local_grocery_store_outlined, "Grocery"),
-                servicescont(w, Icons.ac_unit, "AC Service"),
+                InkWell(
+                  child: servicescont(w, Icons.wifi_rounded, "Grocery"),
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("Request for Electrician?"),
+
+                            // title: Text("Error"),
+                            // content: Text(err.message),
+                            // content:
+                            //     Text("Invalid content, try again!"),
+                            actions: [
+                              TextButton(
+                                child: Text("Cancel"),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              TextButton(
+                                  onPressed: () async {
+                                    FirebaseFirestore.instance
+                                        .collection("users")
+                                        .doc(FirebaseAuth
+                                            .instance.currentUser.uid)
+                                        .update({
+                                      'services[0]': true,
+                                    });
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("Yes"))
+                            ],
+                          );
+                        });
+                  },
+                ),
+                InkWell(
+                  child: servicescont(w, Icons.wifi_rounded, "AC Service"),
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("Request for AC Service?"),
+
+                            // title: Text("Error"),
+                            // content: Text(err.message),
+                            // content:
+                            //     Text("Invalid content, try again!"),
+                            actions: [
+                              TextButton(
+                                child: Text("Cancel"),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              TextButton(
+                                  onPressed: () async {
+                                    FirebaseFirestore.instance
+                                        .collection("users")
+                                        .doc(FirebaseAuth
+                                            .instance.currentUser.uid)
+                                        .update({
+                                      'services[1]': true,
+                                    });
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("Yes"))
+                            ],
+                          );
+                        });
+                  },
+                )
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                servicescont(w, Icons.format_paint, "Painter"),
-                servicescont(w, Icons.water_sharp, "RO Service"),
+                InkWell(
+                  child: servicescont(w, Icons.wifi_rounded, "Painter"),
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("Request for Painter?"),
+
+                            // title: Text("Error"),
+                            // content: Text(err.message),
+                            // content:
+                            //     Text("Invalid content, try again!"),
+                            actions: [
+                              TextButton(
+                                child: Text("Cancel"),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              TextButton(
+                                  onPressed: () async {
+                                    FirebaseFirestore.instance
+                                        .collection("users")
+                                        .doc(FirebaseAuth
+                                            .instance.currentUser.uid)
+                                        .update({
+                                      'services[2]': true,
+                                    });
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("Yes"))
+                            ],
+                          );
+                        });
+                  },
+                ),
+                InkWell(
+                  child: servicescont(w, Icons.wifi_rounded, "RO Service"),
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("Request for RO Service?"),
+
+                            // title: Text("Error"),
+                            // content: Text(err.message),
+                            // content:
+                            //     Text("Invalid content, try again!"),
+                            actions: [
+                              TextButton(
+                                child: Text("Cancel"),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              TextButton(
+                                  onPressed: () async {
+                                    FirebaseFirestore.instance
+                                        .collection("users")
+                                        .doc(FirebaseAuth
+                                            .instance.currentUser.uid)
+                                        .update({
+                                      'services[3]': true,
+                                    });
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("Yes"))
+                            ],
+                          );
+                        });
+                  },
+                )
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                servicescont(w, Icons.bloodtype_outlined, "Water Supply"),
-                servicescont(w, Icons.pest_control, "Pest Control"),
+                InkWell(
+                  child: servicescont(w, Icons.wifi_rounded, "Water Suplly"),
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("Request for Water Supply?"),
+
+                            // title: Text("Error"),
+                            // content: Text(err.message),
+                            // content:
+                            //     Text("Invalid content, try again!"),
+                            actions: [
+                              TextButton(
+                                child: Text("Cancel"),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              TextButton(
+                                  onPressed: () async {
+                                    FirebaseFirestore.instance
+                                        .collection("users")
+                                        .doc(FirebaseAuth
+                                            .instance.currentUser.uid)
+                                        .update({
+                                      'services[4]': true,
+                                    });
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("Yes"))
+                            ],
+                          );
+                        });
+                  },
+                ),
+                InkWell(
+                  child: servicescont(w, Icons.wifi_rounded, "Pest Control"),
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("Request for Pest Control?"),
+
+                            // title: Text("Error"),
+                            // content: Text(err.message),
+                            // content:
+                            //     Text("Invalid content, try again!"),
+                            actions: [
+                              TextButton(
+                                child: Text("Cancel"),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              TextButton(
+                                  onPressed: () async {
+                                    FirebaseFirestore.instance
+                                        .collection("users")
+                                        .doc(FirebaseAuth
+                                            .instance.currentUser.uid)
+                                        .update({
+                                      'services[5]': true,
+                                    });
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("Yes"))
+                            ],
+                          );
+                        });
+                  },
+                )
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                servicescont(w, Icons.plumbing, "Plumber"),
-                servicescont(w, Icons.wifi_rounded, "Electrician"),
+                InkWell(
+                  child: servicescont(w, Icons.wifi_rounded, "Plumber"),
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("Request for Plumber?"),
+
+                            // title: Text("Error"),
+                            // content: Text(err.message),
+                            // content:
+                            //     Text("Invalid content, try again!"),
+                            actions: [
+                              TextButton(
+                                child: Text("Cancel"),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              TextButton(
+                                  onPressed: () async {
+                                    FirebaseFirestore.instance
+                                        .collection("users")
+                                        .doc(FirebaseAuth
+                                            .instance.currentUser.uid)
+                                        .update({
+                                      'services[6]': true,
+                                    });
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("Yes"))
+                            ],
+                          );
+                        });
+                  },
+                ),
+                InkWell(
+                  child: servicescont(w, Icons.wifi_rounded, "Electrician"),
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("Request for Electrician?"),
+
+                            // title: Text("Error"),
+                            // content: Text(err.message),
+                            // content:
+                            //     Text("Invalid content, try again!"),
+                            actions: [
+                              TextButton(
+                                child: Text("Cancel"),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              TextButton(
+                                  onPressed: () async {
+                                    FirebaseFirestore.instance
+                                        .collection("users")
+                                        .doc(FirebaseAuth
+                                            .instance.currentUser.uid)
+                                        .update({
+                                      'services[7]': true,
+                                    });
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("Yes"))
+                            ],
+                          );
+                        });
+                  },
+                )
               ],
             ),
           ],

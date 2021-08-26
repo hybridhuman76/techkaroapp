@@ -17,7 +17,9 @@ String _email = "",
     _mob = "",
     email = "",
     password = "",
-    soc = "demo";
+    soc = "demo",
+    value = "";
+List<Map> apartments = [];
 
 class _LoginSignupScreenState extends State<LoginSignupScreen> {
   bool isMale = true;
@@ -28,11 +30,23 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
   double signupelevation = 0;
   // double loginelevation = 5;
   double loginelevationn = 5;
-
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final firestoreInstance = FirebaseFirestore.instance;
+
   @override
   Widget build(BuildContext context) {
+    firestoreInstance
+        .collection("apartments")
+        .doc("list")
+        .get()
+        .then((value) => {
+              if (value.exists)
+                {
+                  setState(() {
+                    apartments = value.data()['apartments'];
+                  })
+                }
+            });
     double h = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Pallete.backgroundColor,
@@ -284,6 +298,37 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
               Icon(Icons.home), "Select Apartment", false, false, "apt"),
         ),
         Padding(
+          child: Container(
+            width: 150.0 - 20,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+            child: DropdownButton<String>(
+              isExpanded: true,
+              value: value,
+              icon: const Icon(
+                Icons.arrow_downward,
+              ),
+              iconSize: 24,
+              elevation: 16,
+              style: const TextStyle(color: Colors.black),
+              onChanged: (String newValue) {
+                setState(() {
+                  value = newValue;
+                });
+              },
+              items: <String>["", "A"].map<DropdownMenuItem<String>>((value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(
+                    value,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+          padding: EdgeInsets.symmetric(horizontal: 20),
+        ),
+        Padding(
           padding: EdgeInsets.symmetric(vertical: 10),
           child: builtTextField(
               Icon(Icons.home), "Flat Number", false, false, "_flat"),
@@ -321,14 +366,24 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                   "name": _name,
                   "mobile": _mob,
                   "email": _email,
-                  // "society": _al2,
-                  // "locality": _al3,
+                  "complaints": [],
+                  "notifs": [],
+                  "services": [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ],
+                  "visitors": [],
                   "flat": _flat,
                   "isout": false,
                   "role": "member",
                   "bill": 0,
                   "society": soc,
-                  // "fam": {name: "$_name", mob: "$_mob"},
                   "fam": ["$_name, $_mob"],
                 });
                 Navigator.pushReplacement(

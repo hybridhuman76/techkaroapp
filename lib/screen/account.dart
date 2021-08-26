@@ -16,7 +16,7 @@ class Account extends StatefulWidget {
 }
 
 String name = "", newflat = "";
-bool islight, isSmall = false;
+bool islight, isSmall;
 
 class _AccountState extends State<Account> {
   void toggleMode(bool value) {
@@ -316,8 +316,10 @@ class _AccountState extends State<Account> {
               ],
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                // Padding(
+                //   padding: EdgeInsets.only(right: 20),
                 Column(
                   children: <Widget>[
                     Padding(
@@ -333,22 +335,23 @@ class _AccountState extends State<Account> {
                     Text("switch mode"),
                   ],
                 ),
-                Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: 20),
-                      child: Transform.scale(
-                          scale: 2,
-                          child: Switch(
-                            activeColor: Colors.green,
-                            value: isSmall,
-                            onChanged: toggleFont,
-                            inactiveThumbColor: Colors.blueAccent,
-                          )),
-                    ),
-                    Text("change Font Size"),
-                  ],
-                ),
+
+                // Column(
+                //   children: <Widget>[
+                //     Padding(
+                //       padding: EdgeInsets.only(top: 20),
+                //       child: Transform.scale(
+                //           scale: 2,
+                //           child: Switch(
+                //             activeColor: Colors.green,
+                //             value: isSmall,
+                //             onChanged: toggleFont,
+                //             inactiveThumbColor: Colors.blueAccent,
+                //           )),
+                //     ),
+                //     Text("change Font Size"),
+                //   ],
+                // ),
               ],
             ),
           ],

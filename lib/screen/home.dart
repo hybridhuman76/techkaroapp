@@ -66,6 +66,9 @@ class _HomeState extends State<Home> {
             society = "${(value.data()["society"])}";
             role = "${(value.data()["role"])}";
             billamount = (value.data()["bill"]);
+            complaints = List.from((value.data()["complaints"]));
+            notiflist = List.from((value.data()["notifications"]));
+            visitors = List.from((value.data()["visitors"]));
           });
           // print('Document data: ${(value.data()["name"])}');
         } else {
@@ -289,11 +292,11 @@ class _HomeState extends State<Home> {
                                             ),
                                             TextButton(
                                                 onPressed: () async {
-                                                  const number =
-                                                      '08592119XXXX'; //set the number here
+                                                  // String number =
+                                                  //     .toString(); //set the number here
 
                                                   await FlutterPhoneDirectCaller
-                                                      .callNumber(number);
+                                                      .callNumber(line1[2]);
                                                 },
                                                 child: Text("Call"))
                                           ],
@@ -336,7 +339,7 @@ class _HomeState extends State<Home> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
                               Text(
-                                "# $complaint",
+                                "# ${complaints.length}",
                                 style: commonstyle(2 * m, FontWeight.bold),
                               ),
                               MaterialButton(
@@ -430,7 +433,7 @@ class _HomeState extends State<Home> {
                                             '08592119XXXX'; //set the number here
 
                                         await FlutterPhoneDirectCaller
-                                            .callNumber(number);
+                                            .callNumber(line1[2]);
                                       },
                                       child: Text("Call"))
                                 ],
@@ -457,7 +460,7 @@ class _HomeState extends State<Home> {
                 onTap: () async {
                   const number = '08592119XXXX'; //set the number here
 
-                  await FlutterPhoneDirectCaller.callNumber(number);
+                  await FlutterPhoneDirectCaller.callNumber(line1[3]);
                 },
                 child: Container(
                   height: 50,

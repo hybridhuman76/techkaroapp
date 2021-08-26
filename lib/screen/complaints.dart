@@ -63,7 +63,7 @@ class _ComplaintState extends State<Complaint> {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text("Add details of member"),
+                            title: Text("Add Complaint"),
                             content: Container(
                               height: 150,
                               child: Column(
