@@ -362,35 +362,55 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                     email: _email, password: _password)
                 .then((value) {
               if (value.user != null) {
-                firestoreInstance.collection("users").doc(value.user?.uid).set({
-                  "name": _name,
-                  "mobile": _mob,
-                  "email": _email,
-                  "complaints": [],
-                  "notifs": [],
-                  "services": [
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false
-                  ],
-                  "visitors": [],
-                  "flat": _flat,
-                  "isout": false,
-                  "role": "member",
-                  "bill": 0,
-                  "society": soc,
-                  "fam": ["$_name, $_mob"],
-                });
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Home(),
-                    ));
+                firestoreInstance
+                    .collection("users")
+                    .doc(value.user?.uid)
+                    .set({
+                      "name": _name,
+                      "mobile": _mob,
+                      "email": _email,
+                      "complaints": [],
+                      "notifs": [],
+                      "services": {
+                        'ac': false,
+                        'electrician': false,
+                        'grocery': false,
+                        'painter': false,
+                        'pest': false,
+                        'plumber': false,
+                        'ro': false,
+                        'water': false
+                      },
+                      "visitors": [],
+                      "flat": _flat,
+                      "isout": false,
+                      "role": "member",
+                      "bill": 0,
+                      "society": soc,
+                      "fam": ["$_name, $_mob"],
+                    })
+                    .then((value) => {
+                          FirebaseFirestore.instance
+                              .collection("apartments")
+                              .doc(soc)
+                              .update({
+                            'mambers': FieldValue.arrayUnion([
+                              {
+                                "bill": 0,
+                                "flatnum": _flat,
+                                "mobile": _mob,
+                                "name": name
+                              }
+                            ])
+                          })
+                        })
+                    .then((value) => {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Home(),
+                              ))
+                        });
               }
             }).catchError((err) {
               showDialog(

@@ -129,7 +129,7 @@ class _ComplaintState extends State<Complaint> {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text("Add details of member"),
+                            title: Text("Add complaint"),
                             content: Container(
                               height: 150,
                               child: Column(
@@ -160,7 +160,21 @@ class _ComplaintState extends State<Complaint> {
                                       .update({
                                     'complaints':
                                         FieldValue.arrayUnion(["$newComplaint"])
-                                  }).then((_) => Navigator.pop(context));
+                                  }).then((value) => {
+                                            FirebaseFirestore.instance
+                                                .collection("apartments")
+                                                .doc(society)
+                                                .update({
+                                              'complaints':
+                                                  FieldValue.arrayUnion([
+                                                {
+                                                  'complaint': newComplaint,
+                                                  'userid': FirebaseAuth
+                                                      .instance.currentUser.uid
+                                                }
+                                              ])
+                                            })
+                                          });
                                   // setState(() {
                                   //   names.add(addName);
                                   // });

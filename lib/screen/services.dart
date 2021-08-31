@@ -9,16 +9,7 @@ class Services extends StatefulWidget {
   _ServicesState createState() => _ServicesState();
 }
 
-List<bool> serviceslist = [
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false
-];
+Map<String, bool> serviceslist;
 final List<String> matchlist = [
   "grocery",
   "ac",
@@ -41,23 +32,11 @@ class _ServicesState extends State<Services> {
               if (value.exists)
                 {
                   setState(() {
-                    serviceslist = List.from(value.data()['services']);
+                    serviceslist = Map.from(value.data()['services']);
                   })
                 }
             });
-    String txt = "";
-    for (int i = 1; i < 8; i++) {
-      if (serviceslist[i] == true) {
-        setState(() {
-          txt = txt + matchlist[i] + "\n";
-        });
-      }
-      if (txt == "") {
-        setState(() {
-          txt = "no pending requests";
-        });
-      }
-    }
+
     double w = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -103,17 +82,61 @@ class _ServicesState extends State<Services> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("In progress",
+                    Text("Services",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.bold)),
                     Text(
-                      "",
+                      "Grocery: " + checkIfRequested(serviceslist['grocery']),
                       style: TextStyle(
                         color: Colors.white,
                       ),
-                    )
+                    ),
+                    Text(
+                      "AC Service: " + checkIfRequested(serviceslist['ac']),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      "Painter: " + checkIfRequested(serviceslist['painter']),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      "RO Service: " + checkIfRequested(serviceslist['ro']),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      "Water Supply: " +
+                          checkIfRequested(serviceslist['water']),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      "Pest Control: " + checkIfRequested(serviceslist['pest']),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      "Plumber: " + checkIfRequested(serviceslist['plumber']),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      "Electrician: " +
+                          checkIfRequested(serviceslist['electrician']),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -132,7 +155,7 @@ class _ServicesState extends State<Services> {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text("Request for Electrician?"),
+                            title: Text("Request for Grocery?"),
 
                             // title: Text("Error"),
                             // content: Text(err.message),
@@ -152,8 +175,25 @@ class _ServicesState extends State<Services> {
                                         .doc(FirebaseAuth
                                             .instance.currentUser.uid)
                                         .update({
-                                      'services[0]': true,
-                                    });
+                                      "services.grocery": true
+                                    }).then((value) => {
+                                              FirebaseFirestore.instance
+                                                  .collection("apartments")
+                                                  .doc(society)
+                                                  .update({
+                                                "services":
+                                                    FieldValue.arrayUnion([
+                                                  {
+                                                    "req": "grocery",
+                                                    "userid": FirebaseAuth
+                                                        .instance
+                                                        .currentUser
+                                                        .uid
+                                                        .toString()
+                                                  }
+                                                ])
+                                              })
+                                            });
                                     Navigator.pop(context);
                                   },
                                   child: Text("Yes"))
@@ -188,9 +228,25 @@ class _ServicesState extends State<Services> {
                                         .collection("users")
                                         .doc(FirebaseAuth
                                             .instance.currentUser.uid)
-                                        .update({
-                                      'services[1]': true,
-                                    });
+                                        .update({'services["ac"]': true}).then(
+                                            (value) => {
+                                                  FirebaseFirestore.instance
+                                                      .collection("apartments")
+                                                      .doc(society)
+                                                      .update({
+                                                    "services":
+                                                        FieldValue.arrayUnion([
+                                                      {
+                                                        "req": "ac",
+                                                        "userid": FirebaseAuth
+                                                            .instance
+                                                            .currentUser
+                                                            .uid
+                                                            .toString()
+                                                      }
+                                                    ])
+                                                  })
+                                                });
                                     Navigator.pop(context);
                                   },
                                   child: Text("Yes"))
@@ -231,8 +287,25 @@ class _ServicesState extends State<Services> {
                                         .doc(FirebaseAuth
                                             .instance.currentUser.uid)
                                         .update({
-                                      'services[2]': true,
-                                    });
+                                      'services["painter"]': true
+                                    }).then((value) => {
+                                              FirebaseFirestore.instance
+                                                  .collection("apartments")
+                                                  .doc(society)
+                                                  .update({
+                                                "services":
+                                                    FieldValue.arrayUnion([
+                                                  {
+                                                    "req": "painter",
+                                                    "userid": FirebaseAuth
+                                                        .instance
+                                                        .currentUser
+                                                        .uid
+                                                        .toString()
+                                                  }
+                                                ])
+                                              })
+                                            });
                                     Navigator.pop(context);
                                   },
                                   child: Text("Yes"))
@@ -267,9 +340,25 @@ class _ServicesState extends State<Services> {
                                         .collection("users")
                                         .doc(FirebaseAuth
                                             .instance.currentUser.uid)
-                                        .update({
-                                      'services[3]': true,
-                                    });
+                                        .update({'services["ro"]': true}).then(
+                                            (value) => {
+                                                  FirebaseFirestore.instance
+                                                      .collection("apartments")
+                                                      .doc(society)
+                                                      .update({
+                                                    "services":
+                                                        FieldValue.arrayUnion([
+                                                      {
+                                                        "req": "ro",
+                                                        "userid": FirebaseAuth
+                                                            .instance
+                                                            .currentUser
+                                                            .uid
+                                                            .toString()
+                                                      }
+                                                    ])
+                                                  })
+                                                });
                                     Navigator.pop(context);
                                   },
                                   child: Text("Yes"))
@@ -310,8 +399,25 @@ class _ServicesState extends State<Services> {
                                         .doc(FirebaseAuth
                                             .instance.currentUser.uid)
                                         .update({
-                                      'services[4]': true,
-                                    });
+                                      'services["water"]': true
+                                    }).then((value) => {
+                                              FirebaseFirestore.instance
+                                                  .collection("apartments")
+                                                  .doc(society)
+                                                  .update({
+                                                "services":
+                                                    FieldValue.arrayUnion([
+                                                  {
+                                                    "req": "watersupply",
+                                                    "userid": FirebaseAuth
+                                                        .instance
+                                                        .currentUser
+                                                        .uid
+                                                        .toString()
+                                                  }
+                                                ])
+                                              })
+                                            });
                                     Navigator.pop(context);
                                   },
                                   child: Text("Yes"))
@@ -347,8 +453,25 @@ class _ServicesState extends State<Services> {
                                         .doc(FirebaseAuth
                                             .instance.currentUser.uid)
                                         .update({
-                                      'services[5]': true,
-                                    });
+                                      'services["pest"]': true
+                                    }).then((value) => {
+                                              FirebaseFirestore.instance
+                                                  .collection("apartments")
+                                                  .doc(society)
+                                                  .update({
+                                                "services":
+                                                    FieldValue.arrayUnion([
+                                                  {
+                                                    "req": "pest control",
+                                                    "userid": FirebaseAuth
+                                                        .instance
+                                                        .currentUser
+                                                        .uid
+                                                        .toString()
+                                                  }
+                                                ])
+                                              })
+                                            });
                                     Navigator.pop(context);
                                   },
                                   child: Text("Yes"))
@@ -389,8 +512,25 @@ class _ServicesState extends State<Services> {
                                         .doc(FirebaseAuth
                                             .instance.currentUser.uid)
                                         .update({
-                                      'services[6]': true,
-                                    });
+                                      'services["plumber"]': true
+                                    }).then((value) => {
+                                              FirebaseFirestore.instance
+                                                  .collection("apartments")
+                                                  .doc(society)
+                                                  .update({
+                                                "services":
+                                                    FieldValue.arrayUnion([
+                                                  {
+                                                    "req": "plumber",
+                                                    "userid": FirebaseAuth
+                                                        .instance
+                                                        .currentUser
+                                                        .uid
+                                                        .toString()
+                                                  }
+                                                ])
+                                              })
+                                            });
                                     Navigator.pop(context);
                                   },
                                   child: Text("Yes"))
@@ -426,8 +566,25 @@ class _ServicesState extends State<Services> {
                                         .doc(FirebaseAuth
                                             .instance.currentUser.uid)
                                         .update({
-                                      'services[7]': true,
-                                    });
+                                      'services["electrician"]': true
+                                    }).then((value) => {
+                                              FirebaseFirestore.instance
+                                                  .collection("apartments")
+                                                  .doc(society)
+                                                  .update({
+                                                "services":
+                                                    FieldValue.arrayUnion([
+                                                  {
+                                                    "req": "electrician",
+                                                    "userid": FirebaseAuth
+                                                        .instance
+                                                        .currentUser
+                                                        .uid
+                                                        .toString()
+                                                  }
+                                                ])
+                                              })
+                                            });
                                     Navigator.pop(context);
                                   },
                                   child: Text("Yes"))
@@ -471,4 +628,12 @@ servicescont(w, ic, title) {
             border: Border.all(
                 color: Colors.blueAccent, style: BorderStyle.solid, width: 4)),
       ));
+}
+
+checkIfRequested(bool val) {
+  if (val == false) {
+    return "not requested";
+  } else {
+    return "requested";
+  }
 }
